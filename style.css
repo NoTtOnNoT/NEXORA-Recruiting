@@ -39,13 +39,14 @@ body::before {
     top: 0;
     left: 0;
     width: 100%;
-    background: transparent;
+    background: transparent; /* เริ่มต้นด้วยความใสเปล่าประโยชน์ */
     border-bottom: 2px solid transparent;
     z-index: 1000;
     transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
     padding: 30px 0;
 }
 
+/* คลาสที่จะถูกเติมด้วย JS เมื่อเลื่อนจอลงมา */
 .navbar.scrolled {
     background: rgba(255, 255, 255, 0.85);
     backdrop-filter: blur(12px);
@@ -75,12 +76,12 @@ body::before {
     letter-spacing: 3px;
     color: #d4a359;
     font-weight: 600;
-    opacity: 0;
+    opacity: 0; /* ตอนแรกซ่อนไว้ก่อน */
     transition: opacity 0.5s ease;
 }
 
 .navbar.scrolled .nav-tagline {
-    opacity: 1;
+    opacity: 1; /* แสดงผลเมื่อเลื่อนจอลงมา */
 }
 
 /* --- ส่วนหน้าแรกสุด ชื่อพรรคใหญ่กลางจอ (Hero Splash) --- */
@@ -92,14 +93,12 @@ body::before {
     text-align: center;
     position: relative;
     z-index: 2;
-    padding: 0 20px;
 }
 
 .hero-content {
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 100%;
 }
 
 .nav-logo-fixed {
@@ -107,22 +106,25 @@ body::before {
     font-weight: 700;
     letter-spacing: 4px;
     color: #1e3a8a;
-    opacity: 0;
+    opacity: 0; /* ตอนแรกซ่อนไว้ */
     transform: translateY(-10px);
     transition: all 0.5s ease;
 }
 
+/* เมื่อเลื่อนจอลงมา ให้โลโก้ซ้ายบนค่อยๆ ปรากฏขึ้นมา */
 .navbar.scrolled .nav-logo-fixed {
     opacity: 1;
     transform: translateY(0);
 }
 
+/* โลโก้พรรคเวอร์ชันใหญ่กลางจอแบบยืดหยุ่น */
 .party-logo {
     font-size: 7rem;
     font-weight: 700;
     letter-spacing: 12px;
     color: #1e3a8a;
     text-shadow: 0 10px 30px rgba(30, 58, 138, 0.1);
+    /* เตรียมพร้อมสำหรับการทำแอนิเมชันจางหายและย่อลง */
     transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
     opacity: 1;
     transform: scale(1);
@@ -130,8 +132,26 @@ body::before {
 
 .party-logo.fade-and-shrink {
     opacity: 0;
-    transform: scale(0.3);
-    pointer-events: none;
+    transform: scale(0.3); /* ย่อขนาดลงเหลือ 30% */
+    pointer-events: none; /* ป้องกันไม่ให้บังปุ่มอื่นๆ */
+}
+
+/* คลาสสำหรับหดขนาดและย้ายตำแหน่งโลโก้ไปที่เมนูบน */
+.party-logo.shrink {
+    font-size: 1.6rem;
+    letter-spacing: 4px;
+    position: fixed;
+    top: 22px;
+    left: calc((100vw - 1200px) / 2 + 20px); /* จัดให้อยู่ตำแหน่งตรงกับขอบคอนเทนเนอร์ */
+    z-index: 1001;
+    text-shadow: none;
+}
+
+/* กรณีหน้าจอแคบกว่าคอนเทนเนอร์ ให้ชิดซ้ายตามสัดส่วนจอ */
+@media (max-width: 1240px) {
+    .party-logo.shrink {
+        left: 20px;
+    }
 }
 
 .party-slogan {
@@ -362,6 +382,7 @@ body::before {
     transform: translateY(-2px);
 }
 
+/* กล่องแจ้งเตือนสถานะ */
 .status-box {
     margin-top: 25px;
     padding: 16px;
@@ -373,6 +394,7 @@ body::before {
 .status-box.error { background: rgba(239, 68, 68, 0.2); color: #f87171; border: 1px solid #dc2626; }
 .hidden { display: none; }
 
+/* Footer */
 .official-footer {
     background-color: #050b18;
     color: #64748b;
@@ -383,109 +405,43 @@ body::before {
     border-top: 1px solid rgba(212, 163, 89, 0.2);
 }
 
-/* =======================================================
-   🔥 ปรับปรุงระบบ RESPONSIVE สำหรับหน้าจอมือถืออย่างสมบูรณ์ 🔥
-   ======================================================= */
+/* --- การแสดงผลบนมือถือ --- */
 @media (max-width: 900px) {
-    /* 1. ส่วนหัวเว็บและแอนิเมชันตอนย่อ */
-    .navbar {
-        padding: 15px 0;
-    }
-    .navbar.scrolled {
-        padding: 10px 0;
-    }
-    .nav-container {
-        padding: 0 15px;
-    }
-    .nav-logo-fixed {
-        font-size: 1.3rem;
-        letter-spacing: 2px;
-    }
-    .nav-tagline {
-        font-size: 0.65rem;
-        letter-spacing: 1px;
-    }
-
-    /* 2. หน้าเปิดตัวกลางจอ */
     .party-logo {
-        font-size: 3.5rem; /* ลดขนาดโลโก้ใหญ่ไม่ให้ล้นจอมือถือ */
+        font-size: 4rem;
         letter-spacing: 6px;
+    }
+    .party-logo.shrink {
+        font-size: 1.4rem;
+        top: 18px;
+        left: 20px;
     }
     .party-slogan {
         font-size: 0.9rem;
         letter-spacing: 4px;
-        line-height: 1.5;
-        padding: 0 10px;
     }
-
-    /* 3. การแสดงผลคนละหน้าเต็มจอ (ปรับให้เลื่อนแนวตั้งได้พอดี) */
     .fullscreen-section {
         height: auto;
-        min-height: 100vh;
-        padding: 80px 15px 40px 15px;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
+        min-height: auto;
+        padding: 100px 20px 60px 20px;
     }
-
-    /* บังคับโครงสร้างกล่องสมาชิกให้เรียงจากบนลงล่าง ภาพอยู่บนเสมอ */
-    .img-left .section-container, 
-    .img-right .section-container { 
+    .section-container {
         flex-direction: column !important;
-        gap: 25px;
+        gap: 30px;
         text-align: center;
     }
-
-    /* 4. จัดการขนาดรูปภาพบนมือถือ */
     .member-image-wrapper {
+        height: 380px;
         width: 100%;
-        height: 45vh; /* ความสูงเหมาะสมในแนวตั้งพอร์เทรต */
-        max-height: 380px;
-    }
-    
-    .member-image-wrapper img {
-        width: auto;
-        height: 100%;
-        /* รักษาเอฟเฟกต์ไล่สีกราเดียนต์เฟดล่างบนมือถือ */
-        -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 65%, rgba(0,0,0,0) 100%);
-        mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 65%, rgba(0,0,0,0) 100%);
-    }
-
-    /* 5. จัดการขนาดตัวหนังสือข้อมูล */
-    .member-info {
-        width: 100%;
-        align-items: center;
-    }
-    .role-title {
-        font-size: 1.4rem;
     }
     .name {
-        font-size: 2.2rem; /* ขนาดชื่อหนาเด่นกระชับบนมือถือ */
-        word-break: keep-all; /* ป้องกันสระและพยัญชนะไทยตัดบรรทัดแปลกๆ */
+        font-size: 2.2rem;
     }
-
-    /* 6. ปรับปรุงการแสดงผลระบบฟอร์มสมัคร */
-    .form-container {
-        width: 100%;
-    }
-    .form-header h2 {
-        font-size: 2rem;
-    }
-    .official-form {
-        padding: 30px 20px; /* ลดพื้นที่ว่างขอบฟอร์มให้เหลือพื้นที่พิมพ์เยอะขึ้น */
-        border-radius: 16px;
-    }
-    /* บังคับให้ตารางกรอก Facebook และ Instagram ยุบตัวรวมกันเป็น 1 คอลัมน์ */
     .form-grid {
         grid-template-columns: 1fr;
         gap: 0;
     }
-    .form-group input {
-        padding: 14px;
-        font-size: 0.95rem;
-    }
-    .btn-submit-official {
-        padding: 15px;
-        font-size: 1rem;
+    .official-form {
+        padding: 30px 20px;
     }
 }
