@@ -1,98 +1,131 @@
 <!DOCTYPE html>
 <html lang="th">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NEXORA PARTY</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;700&display=swap" rel="stylesheet">
-</head>
-<body>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>NEXORA PARTY - เว็บไซต์ทางการ</title>
+        <link rel="stylesheet" href="style.css">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link
+            href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&display=swap"
+            rel="stylesheet">
+    </head>
+    <body>
 
-    <header class="hero-header">
-        <h1 class="party-logo">NEXORA</h1>
-        <p class="party-slogan">THE FUTURE IS NOW</p>
-    </header>
-
-    <main class="container">
-        
-        <section class="team-section">
-            
-            <div class="member-row img-left">
-                <div class="member-image-wrapper">
-                    <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=600&auto=format&fit=crop" alt="ประธานพรรค">
+        <nav class="navbar" id="navbar">
+            <div class="nav-container">
+                <div class="logo-space" id="logo-space">
+                    <span class="nav-logo-fixed">NEXORA</span>
                 </div>
-                <div class="member-info">
-                    <span class="role">ประธานพรรค</span>
-                    <h2 class="name">ธนภูมิ อัศวเดชากุล</h2>
+                <span class="nav-tagline">OFFICIAL WEBSITE</span>
+            </div>
+        </nav>
+
+        <section class="hero-splash-section" id="hero-section">
+            <div class="hero-content">
+                <h1 class="party-logo" id="party-logo">NEXORA</h1>
+                <p class="party-slogan" id="party-slogan">THE FUTURE IS NOW</p>
+                <div class="scroll-indicator">
+                    <p>เลื่อนลงเพื่อดูเพิ่มเติม</p>
+                    <div class="arrow">↓</div>
                 </div>
             </div>
-
-            <div class="member-row img-right">
-                <div class="member-image-wrapper">
-                    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=600&auto=format&fit=crop" alt="รองประธานพรรค">
-                </div>
-                <div class="member-info">
-                    <span class="role">รองประธานพรรค</span>
-                    <h2 class="name">กิตติพจน์ เมธาภิวัฒน์</h2>
-                </div>
-            </div>
-
-            <div class="member-row img-left">
-                <div class="member-image-wrapper">
-                    <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?q=80&w=600&auto=format&fit=crop" alt="เลขานุการพรรค">
-                </div>
-                <div class="member-info">
-                    <span class="role">เลขานุการพรรค</span>
-                    <h2 class="name">รมิดา พรประเสริฐ</h2>
-                </div>
-            </div>
-
         </section>
 
-        <section class="registration-section">
-            <div class="form-card">
-                <h2>สมัครรับเลือกตั้ง / เข้าร่วมพรรค</h2>
-                <p class="form-subtitle">กรอกข้อมูลของคุณเพื่อร่วมขับเคลื่อนพรรค NEXORA ไปด้วยกัน</p>
-                
-                <form id="sheetdb-form">
+        <section class="fullscreen-section img-left">
+            <div class="section-container">
+                <div class="member-image-wrapper">
+                    <img
+                        src="members/ประธาน.png"
+                        alt="ประธานพรรค">
+                </div>
+                <div class="member-info">
+                    <span class="role-text">#01 / COLLABORATION</span>
+                    <h3 class="role-title">ประธานพรรค</h3>
+                    <h2 class="name">แสงอรุณ ไพโรจน์</h2>
+                </div>
+            </div>
+        </section>
+
+        <section class="fullscreen-section img-right">
+            <div class="section-container">
+                <div class="member-image-wrapper">
+                    <img
+                        src="members/ประธาน.png"
+                        alt="รองประธานพรรค">
+                </div>
+                <div class="member-info">
+                    <span class="role-text">#02 / INNOVATION</span>
+                    <h3 class="role-title">รองประธานพรรค</h3>
+                    <h2 class="name">แสงอรุณ ไพโรจน์</h2>
+                </div>
+            </div>
+        </section>
+
+        <section class="fullscreen-section img-left">
+            <div class="section-container">
+                <div class="member-image-wrapper">
+                    <img
+                        src="members/ประธาน.png"
+                        alt="เลขานุการพรรค">
+                </div>
+                <div class="member-info">
+                    <span class="role-text">#03 / TRANSPARENCY</span>
+                    <h3 class="role-title">เลขานุการพรรค</h3>
+                    <h2 class="name">แสงอรุณ ไพโรจน์</h2>
+                </div>
+            </div>
+        </section>
+
+        <section class="fullscreen-section bg-dark-blue">
+            <div class="form-container">
+                <div class="form-header">
+                    <h2>NEXORA FORM</h2>
+                    <p>ร่วมเป็นส่วนหนึ่งในการขับเคลื่อนอุดมการณ์ไปกับพรรค
+                        NEXORA</p>
+                </div>
+
+                <form id="sheetdb-form" class="official-form">
                     <div class="form-group">
                         <label for="name">ชื่อ - นามสกุล</label>
-                        <input type="text" id="name" name="name" placeholder="เช่น นายสมชาย ใจดี" required>
+                        <input type="text" id="name" name="name"
+                            placeholder="กรุณากรอกชื่อและนามสกุลจริง" required>
                     </div>
 
                     <div class="form-group">
-                        <label for="grade">ห้อง ม.</label>
-                        <input type="text" id="grade" name="grade" placeholder="เช่น ม.5/1 หรือ ม.6/4" required>
+                        <label for="grade">ระดับชั้น / ห้องเรียน</label>
+                        <input type="text" id="grade" name="grade"
+                            placeholder="ตัวอย่าง: 5/1" required>
                     </div>
 
-                    <div class="form-row">
+                    <div class="form-grid">
                         <div class="form-group">
-                            <label for="facebook">Facebook</label>
-                            <input type="text" id="facebook" name="facebook" placeholder="ชื่อเฟสบุ๊ค หรือลิงก์โปรไฟล์" required>
+                            <label for="facebook">Facebook Account</label>
+                            <input type="text" id="facebook" name="facebook"
+                                placeholder="ลิงก์โปรไฟล์หรือชื่อบัญชี"
+                                required>
                         </div>
 
                         <div class="form-group">
-                            <label for="instagram">Instagram</label>
-                            <input type="text" id="instagram" name="instagram" placeholder="เช่น @nexora_ig" required>
+                            <label for="instagram">Instagram Account</label>
+                            <input type="text" id="instagram" name="instagram"
+                                placeholder="ตัวอย่าง: @nexora_party" required>
                         </div>
                     </div>
 
-                    <button type="submit" id="submit-btn" class="btn-submit">ส่งใบสมัคร</button>
+                    <button type="submit" id="submit-btn"
+                        class="btn-submit-official">ส่งข้อมูลใบสมัคร</button>
                 </form>
-                
-                <div id="status-message" class="status-msg hidden"></div>
+
+                <div id="status-message" class="status-box hidden"></div>
             </div>
         </section>
 
-    </main>
+        <footer class="official-footer">
+            <p>&copy; 2026 NEXORA PARTY. ALL RIGHTS RESERVED.</p>
+        </footer>
 
-    <footer>
-        <p>&copy; 2026 NEXORA PARTY. All Rights Reserved.</p>
-    </footer>
-
-    <script src="script.js"></script>
-</body>
+        <script src="script.js"></script>
+    </body>
 </html>

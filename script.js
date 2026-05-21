@@ -1,46 +1,65 @@
+// --- 1. ระบบควบคุมแอนิเมชันโลโก้ ย่อ-ขยาย ตามการ Scroll ---
+window.addEventListener('scroll', function() {
+    const navbar = document.getElementById('navbar');
+    const logo = document.getElementById('party-logo');
+    const slogan = document.getElementById('party-slogan');
+    const indicator = document.querySelector('.scroll-indicator');
+    
+    // ถ้าเลื่อนหน้าจอลงมาเกิน 100 พิกเซล
+    if (window.scrollY > 100) {
+        navbar.classList.add('scrolled');
+        logo.classList.add('fade-and-shrink'); // เรียกใช้คลาสจางหายและย่อลง
+        if(slogan) slogan.classList.add('fade-out');
+        if(indicator) indicator.classList.add('fade-out');
+    } else {
+        navbar.classList.remove('scrolled');
+        logo.classList.remove('fade-and-shrink'); // เอฟเฟกต์กลับมาใหญ่เหมือนเดิมเมื่อเลื่อนกลับขึ้นสุด
+        if(slogan) slogan.classList.remove('fade-out');
+        if(indicator) indicator.classList.remove('fade-out');
+    }
+});
+
+
+// --- 2. ระบบส่งข้อมูลไปยังฐานข้อมูล Google Sheet ---
 document.getElementById('sheetdb-form').addEventListener('submit', function(e) {
-    e.preventDefault(); // ป้องกันหน้าเว็บรีเฟรช
+    e.preventDefault(); 
 
     const form = e.target;
     const submitBtn = document.getElementById('submit-btn');
     const statusMsg = document.getElementById('status-message');
 
-    // 1. เปลี่ยนข้อความปุ่มระหว่างส่งข้อมูล
-    submitBtn.innerText = 'กำลังส่งใบสมัคร...';
+    // ปรับสถานะปุ่มเมื่อกดส่งข้อมูล
+    submitBtn.innerText = 'PROCESSING...';
     submitBtn.disabled = true;
 
-    // 2. ดึงข้อมูลจากฟอร์ม
+    // ดึงข้อมูลฟอร์ม
     const formData = new FormData(form);
 
-    /* [สำคัญ] นำ URL ของ API Google Sheet ของคุณมาวางแทนที่ตรงนี้ 
-       เช่น เปลี่ยนจาก 'YOUR_API_URL_HERE' เป็นลิงก์ที่ได้จาก SheetDB หรือ Google Apps Script
-    */
+    /* ⚠️ นำลิงก์ API สำหรับ Google Sheets มาใส่ตรงนี้นะครับ */
     const sheetAPI_URL = 'https://sheetdb.io/api/v1/vjht2bq2sau8i'; 
 
-    // 3. ยิงข้อมูลไปที่ Google Sheet
+    // ส่งคำขอไปยัง Google Sheets
     fetch(sheetAPI_URL, {
         method: 'POST',
         body: formData
     })
     .then(response => {
         if(response.ok) {
-            // แสดงข้อความสำเร็จ
-            statusMsg.innerText = '🎉 ส่งใบสมัครสำเร็จ! ยินดีต้อนรับสู่พรรค NEXORA';
-            statusMsg.className = 'status-msg success';
-            form.reset(); // เคลียร์ข้อมูลในฟอร์ม
+            statusMsg.innerText = 'SUCCESS: บันทึกข้อมูลใบสมัครของคุณเรียบร้อยแล้ว';
+            statusMsg.className = 'status-box success';
+            form.reset(); 
         } else {
-            throw new Error('Network response was not ok.');
+            throw new Error('Submission failed');
         }
     })
     .catch(error => {
-        // แสดงข้อความเมื่อเกิดข้อผิดพลาด
-        statusMsg.innerText = '❌ เกิดข้อผิดพลาด กรุณาลองใหม่อีกครั้ง หรือตรวจสอบการตั้งค่า API';
-        statusMsg.className = 'status-msg error';
+        statusMsg.innerText = 'ERROR: ไม่สามารถส่งข้อมูลได้ กรุณาตรวจสอบระบบเครือข่าย';
+        statusMsg.className = 'status-box error';
         console.error('Error:', error);
     })
     .finally(() => {
-        // เปลี่ยนปุ่มกลับมาเป็นเหมือนเดิม
-        submitBtn.innerText = 'ส่งใบสมัคร';
+        submitBtn.innerText = 'ส่งข้อมูลใบสมัคร';
         submitBtn.disabled = false;
+        statusMsg.classList.remove('hidden'); 
     });
 });
