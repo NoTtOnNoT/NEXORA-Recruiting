@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NEXORA PARTY - Admin Dashboard</title>
+    <link rel="stylesheet" href="admin-style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <div class="admin-container">
+        <aside class="sidebar">
+            <div class="sidebar-brand">
+                <h2>NEXORA</h2>
+                <span>CORE CONTROL</span>
+            </div>
+            <div class="stats-panel">
+                <div class="stat-box">
+                    <span class="stat-label">ผู้สมัครทั้งหมด</span>
+                    <span class="stat-number" id="total-applicants">0</span>
+                </div>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <header class="content-header">
+                <div class="header-title">
+                    <h1>รายชื่อผู้สมัครเข้าร่วมพรรค</h1>
+                    <p>ระบบจัดการและตรวจสอบข้อมูลสมาชิกแบบเรียลไทม์</p>
+                </div>
+                
+                <div class="search-box">
+                    <input type="text" id="search-input" placeholder="ค้นหาด้วยชื่อ หรือ ระดับชั้น...">
+                </div>
+            </header>
+
+            <div id="loading-state" class="loading-box">
+                <div class="spinner"></div>
+                <p>กำลังดึงข้อมูลจาก NEXORA DATABASE...</p>
+            </div>
+
+            <div id="applicants-grid" class="applicants-grid">
+                </div>
+        </main>
+    </div>
+
+    <script src="admin-script.js"></script>
+</body>
+</html>
