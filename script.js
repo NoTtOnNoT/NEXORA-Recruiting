@@ -1,19 +1,21 @@
-// --- 1. ระบบควบคุมแอนิเมชันโลโก้ ย่อ-ขยาย ตามการ Scroll ---
-window.addEventListener('scroll', function() {
+// --- 1. ควบคุมแอนิเมชันโลโก้ ย่อ-ขยาย ผ่าน Container เลื่อนหน้าจอ ---
+const snapContainer = document.querySelector('.snap-container');
+
+snapContainer.addEventListener('scroll', function() {
     const navbar = document.getElementById('navbar');
     const logo = document.getElementById('party-logo');
     const slogan = document.getElementById('party-slogan');
     const indicator = document.querySelector('.scroll-indicator');
     
-    // ถ้าเลื่อนหน้าจอลงมาเกิน 100 พิกเซล
-    if (window.scrollY > 100) {
+    // ดึงค่าการสโครลจากกล่อง snapContainer แทน window
+    if (snapContainer.scrollTop > 80) {
         navbar.classList.add('scrolled');
-        logo.classList.add('fade-and-shrink'); // เรียกใช้คลาสจางหายและย่อลง
+        if(logo) logo.classList.add('fade-and-shrink'); 
         if(slogan) slogan.classList.add('fade-out');
         if(indicator) indicator.classList.add('fade-out');
     } else {
         navbar.classList.remove('scrolled');
-        logo.classList.remove('fade-and-shrink'); // เอฟเฟกต์กลับมาใหญ่เหมือนเดิมเมื่อเลื่อนกลับขึ้นสุด
+        if(logo) logo.classList.remove('fade-and-shrink'); 
         if(slogan) slogan.classList.remove('fade-out');
         if(indicator) indicator.classList.remove('fade-out');
     }
@@ -28,17 +30,12 @@ document.getElementById('sheetdb-form').addEventListener('submit', function(e) {
     const submitBtn = document.getElementById('submit-btn');
     const statusMsg = document.getElementById('status-message');
 
-    // ปรับสถานะปุ่มเมื่อกดส่งข้อมูล
     submitBtn.innerText = 'PROCESSING...';
     submitBtn.disabled = true;
 
-    // ดึงข้อมูลฟอร์ม
     const formData = new FormData(form);
-
-    /* ⚠️ นำลิงก์ API สำหรับ Google Sheets มาใส่ตรงนี้นะครับ */
     const sheetAPI_URL = 'https://sheetdb.io/api/v1/vjht2bq2sau8i'; 
 
-    // ส่งคำขอไปยัง Google Sheets
     fetch(sheetAPI_URL, {
         method: 'POST',
         body: formData
