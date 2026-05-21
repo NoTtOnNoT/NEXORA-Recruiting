@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NEXORA PARTY</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <header class="hero-header">
+        <h1 class="party-logo">NEXORA</h1>
+        <p class="party-slogan">THE FUTURE IS NOW</p>
+    </header>
+
+    <main class="container">
+        
+        <section class="team-section">
+            
+            <div class="member-row img-left">
+                <div class="member-image-wrapper">
+                    <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=600&auto=format&fit=crop" alt="ประธานพรรค">
+                </div>
+                <div class="member-info">
+                    <span class="role">ประธานพรรค</span>
+                    <h2 class="name">ธนภูมิ อัศวเดชากุล</h2>
+                </div>
+            </div>
+
+            <div class="member-row img-right">
+                <div class="member-image-wrapper">
+                    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=600&auto=format&fit=crop" alt="รองประธานพรรค">
+                </div>
+                <div class="member-info">
+                    <span class="role">รองประธานพรรค</span>
+                    <h2 class="name">กิตติพจน์ เมธาภิวัฒน์</h2>
+                </div>
+            </div>
+
+            <div class="member-row img-left">
+                <div class="member-image-wrapper">
+                    <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?q=80&w=600&auto=format&fit=crop" alt="เลขานุการพรรค">
+                </div>
+                <div class="member-info">
+                    <span class="role">เลขานุการพรรค</span>
+                    <h2 class="name">รมิดา พรประเสริฐ</h2>
+                </div>
+            </div>
+
+        </section>
+
+        <section class="registration-section">
+            <div class="form-card">
+                <h2>สมัครรับเลือกตั้ง / เข้าร่วมพรรค</h2>
+                <p class="form-subtitle">กรอกข้อมูลของคุณเพื่อร่วมขับเคลื่อนพรรค NEXORA ไปด้วยกัน</p>
+                
+                <form id="sheetdb-form">
+                    <div class="form-group">
+                        <label for="name">ชื่อ - นามสกุล</label>
+                        <input type="text" id="name" name="name" placeholder="เช่น นายสมชาย ใจดี" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="grade">ห้อง ม.</label>
+                        <input type="text" id="grade" name="grade" placeholder="เช่น ม.5/1 หรือ ม.6/4" required>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="facebook">Facebook</label>
+                            <input type="text" id="facebook" name="facebook" placeholder="ชื่อเฟสบุ๊ค หรือลิงก์โปรไฟล์" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="instagram">Instagram</label>
+                            <input type="text" id="instagram" name="instagram" placeholder="เช่น @nexora_ig" required>
+                        </div>
+                    </div>
+
+                    <button type="submit" id="submit-btn" class="btn-submit">ส่งใบสมัคร</button>
+                </form>
+                
+                <div id="status-message" class="status-msg hidden"></div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer>
+        <p>&copy; 2026 NEXORA PARTY. All Rights Reserved.</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

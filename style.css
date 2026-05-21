@@ -1,0 +1,232 @@
+/* รีเซ็ตค่าเริ่มต้นและตั้งค่าธีมมืด (Dark Elegant Theme) */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Kanit', sans-serif;
+}
+
+body {
+    background-color: #0b0f19; /* สีน้ำเงินเข้มลึก */
+    color: #ffffff;
+    overflow-x: hidden;
+}
+
+.container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* --- Header --- */
+.hero-header {
+    text-align: center;
+    padding: 80px 20px 40px 20px;
+}
+
+.party-logo {
+    font-size: 4rem;
+    font-weight: 700;
+    letter-spacing: 6px;
+    background: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0px 10px 30px rgba(0, 242, 254, 0.15);
+}
+
+.party-slogan {
+    font-size: 0.9rem;
+    letter-spacing: 8px;
+    color: #64748b;
+    margin-top: 5px;
+    text-transform: uppercase;
+}
+
+/* --- ส่วนโครงสร้างข้อมูลสมาชิก (ไม่มีกรอบ) --- */
+.team-section {
+    margin-bottom: 100px;
+}
+
+.member-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 80px;
+    margin-bottom: 40px; /* ขยับระยะห่างระหว่าคนให้กระชับขึ้น */
+    height: 350px;
+}
+
+/* ควบคุมการสลับตำแหน่ง */
+.img-left { flex-direction: row; }
+.img-right { flex-direction: row-reverse; }
+
+/* เทคนิคทำรูปภาพให้เฟดจางหายที่ด้านล่าง */
+.member-image-wrapper {
+    width: 280px;
+    height: 100%;
+    overflow: hidden;
+    position: relative;
+}
+
+.member-image-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    /* เทคนิค Mask ไล่สีดำไปโปร่งใสเพื่อให้ด้านล่างกลืนไปกับพื้นหลัง */
+    -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 60%, rgba(0,0,0,0) 100%);
+    mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 60%, rgba(0,0,0,0) 100%);
+}
+
+/* ข้อมูลตัวหนังสือ */
+.member-info {
+    flex-of-weight: 400;
+}
+
+.role {
+    font-size: 1.1rem;
+    color: #00f2fe;
+    font-weight: 500;
+    display: block;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.name {
+    font-size: 2.2rem;
+    font-weight: 500;
+    color: #f8fafc;
+}
+
+/* --- ฟอร์มรับสมัครสไตล์กระจกฝ้าหรูหรา --- */
+.registration-section {
+    margin-bottom: 80px;
+}
+
+.form-card {
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 24px;
+    padding: 50px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+}
+
+.form-card h2 {
+    font-size: 2rem;
+    text-align: center;
+    margin-bottom: 10px;
+    color: #f8fafc;
+}
+
+.form-subtitle {
+    text-align: center;
+    color: #94a3b8;
+    margin-bottom: 40px;
+    font-size: 0.95rem;
+}
+
+.form-group {
+    margin-bottom: 25px;
+    display: flex;
+    flex-direction: column;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.form-group label {
+    font-size: 0.9rem;
+    color: #cbd5e1;
+    margin-bottom: 8px;
+    font-weight: 500;
+}
+
+.form-group input {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 14px 20px;
+    border-radius: 12px;
+    color: #ffffff;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: #00f2fe;
+    background: rgba(0, 242, 254, 0.03);
+    box-shadow: 0 0 15px rgba(0, 242, 254, 0.2);
+}
+
+/* ปุ่มส่งแบบ Modern */
+.btn-submit {
+    width: 100%;
+    padding: 16px;
+    background: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%);
+    border: none;
+    border-radius: 12px;
+    color: #0b0f19;
+    font-size: 1.1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 15px;
+}
+
+.btn-submit:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(0, 242, 254, 0.4);
+}
+
+.btn-submit:active {
+    transform: translateY(0);
+}
+
+/* สถานะการส่ง */
+.status-msg {
+    margin-top: 20px;
+    padding: 12px;
+    border-radius: 8px;
+    text-align: center;
+    font-size: 0.95rem;
+}
+
+.status-msg.success { background: rgba(16, 185, 129, 0.15); color: #10b981; border: 1px solid rgba(16, 185, 129, 0.3); }
+.status-msg.error { background: rgba(239, 68, 68, 0.15); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.3); }
+.hidden { display: none; }
+
+footer {
+    text-align: center;
+    padding: 40px;
+    color: #475569;
+    font-size: 0.85rem;
+    letter-spacing: 1px;
+}
+
+/* Responsive สำหรับมือถือ จอจะเรียงเป็นแนวตั้งอัตโนมัติ */
+@media (max-width: 768px) {
+    .member-row.img-left, .member-row.img-right {
+        flex-direction: column;
+        height: auto;
+        gap: 20px;
+        margin-bottom: 60px;
+        text-align: center;
+    }
+    .member-image-wrapper {
+        width: 220px;
+        height: 250px;
+    }
+    .form-row {
+        grid-template-columns: 1fr;
+        gap: 0;
+    }
+    .form-card {
+        padding: 30px 20px;
+    }
+    .party-logo { font-size: 3rem; }
+}
