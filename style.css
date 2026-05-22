@@ -1162,6 +1162,10 @@ body::before {
 }
 
 /* สไตล์ตัวอักษรยักษ์พื้นหลังสำหรับหน้าสมาชิก */
+/* ==========================================================================
+   🌌 MEMBER SECTIONS BACKGROUND TEXT (SOFT & FADED GLOW EFFECT)
+   ========================================================================== */
+
 .member-bg-text {
     position: absolute;
     top: 50%;
@@ -1169,32 +1173,41 @@ body::before {
     transform: translate(-50%, -50%); /* จัดให้อยู่กึ่งกลางหน้าจอพอดี */
     margin: 0;
     
-    /* ขนาดใหญ่สะใจเต็มหน้าจอ */
+    /* ขนาดใหญ่เต็มหน้าจอ */
     font-size: 15vw; 
     font-weight: 900;
     letter-spacing: 30px;
     line-height: 1;
-    z-index: 1; /* เลข 1 เพื่อให้อยู่เลเยอร์หลังสุดหลังรูปภาพคน */
+    z-index: 1; 
     
-    /* การไล่สีขาว-ฟ้าจางๆ ละมุนตา ไม่แย่งความเด่นของรูปคน */
-    background: linear-gradient(180deg, rgba(255, 255, 255, 0.02) 0%, rgba(59, 130, 246, 0.04) 100%);
+    /* 🎨 ขั้นตอนที่ 1: ปรับเนื้ออักษรให้จางมากๆ จนแทบกลืนไปกับพื้นหลัง */
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.015) 0%, rgba(59, 130, 246, 0.05) 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
     
-    /* เคลือบเงาเรืองแสงบางเบาให้ดูไฮเทค */
-    filter: drop-shadow(0 0 30px rgba(59, 130, 246, 0.1));
+    /* 🪄 ขั้นตอนที่ 2: ทำขอบตัวอักษรให้ค่อยๆ ฟุ้งจางออก (ไม่ให้เป็นเส้นเหลี่ยมคม) */
+    -webkit-text-stroke: 1px rgba(96, 165, 250, 0.15); 
     
-    user-select: none;     /* ยูสเซอร์ลากคลุมไม่ได้ */
-    pointer-events: none;  /* เมาส์ทะลุผ่านได้ ไม่บังการคลิกปุ่มลิงก์ IG */
+    /* ✨ ขั้นตอนที่ 3: ใส่เอฟเฟกต์เบลอตัวอักษรเบาๆ เพื่อลบความเหลี่ยมคม 
+       ร่วมกับการซ้อนเงาฟุ้งสเต็ปนุ่มนวล (Soft Glow) */
+    filter: blur(2px)
+            drop-shadow(0 0 20px rgba(59, 130, 246, 0.5))
+            drop-shadow(0 0 60px rgba(59, 130, 246, 0.2));
+    
+    user-select: none;     
+    pointer-events: none;  
 }
 
-/* 📱 ปรับแต่งความสวยงามเมื่อเปิดบนหน้าจอมือถือ */
+/* 📱 ปรับแต่งความนุ่มนวลเมื่อเปิดบนหน้าจอมือถือ */
 @media screen and (max-width: 768px) {
     .member-bg-text {
-        font-size: 22vw; /* ขยายให้ใหญ่ขึ้นเต็มหน้าจอมือถือ */
-        letter-spacing: 12px; /* ลดระยะห่างตัวอักษรลงเพื่อไม่ให้ตกขอบหน้าจอ */
-        opacity: 0.7; 
+        font-size: 22vw; 
+        letter-spacing: 12px; 
+        
+        /* บนมือถือปรับให้เบลอน้อยลงนิดนึงเพื่อให้ยังอ่านออก แต่ขอบยังคงฟุ้งมนอยู่ครับ */
+        filter: blur(1.5px) drop-shadow(0 0 15px rgba(59, 130, 246, 0.4));
+        -webkit-text-stroke: 1px rgba(96, 165, 250, 0.2);
     }
 }
 
