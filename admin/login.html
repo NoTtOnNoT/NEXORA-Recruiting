@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NEXORA PARTY - Admin Authentication</title>
+    <link rel="stylesheet" href="admin-style.css"> <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* สไตล์เพิ่มเติมเฉพาะหน้า Login ให้ดูโมเดิร์นและล้ำยุค */
+        .login-body {
+            background: #030712;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+        .login-box {
+            background: rgba(30, 41, 59, 0.4);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            backdrop-filter: blur(16px);
+            padding: 40px;
+            border-radius: 16px;
+            width: 100%;
+            max-width: 400px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+            text-align: center;
+        }
+        .login-brand h2 {
+            font-size: 2rem;
+            color: #ffffff;
+            letter-spacing: 4px;
+            margin-bottom: 5px;
+            font-weight: 800;
+        }
+        .login-brand span {
+            color: #3b82f6;
+            font-size: 0.85rem;
+            letter-spacing: 2px;
+            display: block;
+            margin-bottom: 30px;
+        }
+        .form-group {
+            text-align: left;
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            display: block;
+            color: #94a3b8;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            color: #ffffff;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            box-sizing: border-box;
+        }
+        .form-group input:focus {
+            border-color: #3b82f6;
+            outline: none;
+            box-shadow: 0 0 10px rgba(59, 130, 246, 0.2);
+        }
+        .btn-login {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #1d4ed8 0%, #3b82f6 100%);
+            border: none;
+            border-radius: 8px;
+            color: #ffffff;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+        }
+        .btn-login:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 20px rgba(59, 130, 246, 0.4);
+        }
+        .error-text {
+            color: #f87171;
+            font-size: 0.85rem;
+            margin-top: 15px;
+            display: none;
+        }
+    </style>
+</head>
+<body class="login-body">
+
+    <div class="login-box">
+        <div class="login-brand">
+            <h2>NEXORA</h2>
+            <span>GATEWAY SECURITY</span>
+        </div>
+
+        <form id="login-form">
+            <div class="form-group">
+                <label for="username">บัญชีผู้ดูแล (Username)</label>
+                <input type="text" id="username" autocomplete="off" required placeholder="กรอกชื่อบัญชี">
+            </div>
+            <div class="form-group">
+                <label for="password">รหัสผ่าน Security Key</label>
+                <input type="password" id="password" required placeholder="••••••••">
+            </div>
+            
+            <button type="submit" class="btn-login">เข้าสู่ระบบควบคุม</button>
+            <p id="error-msg" class="error-text">❌ ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง</p>
+        </form>
+    </div>
+
+    <script src="login-script.js"></script>
+</body>
+</html>
