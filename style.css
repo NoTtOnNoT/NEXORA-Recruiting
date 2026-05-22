@@ -81,12 +81,36 @@ body::before {
 }
 
 .nav-tagline {
+    font-weight: 500;
     font-size: 0.75rem;
     letter-spacing: 3px;
-    color: #d4a359;
-    font-weight: 600;
+    display: inline-block;
+    
+    /* 🎨 เฉดสี: ทองคำหรูหรา ไล่ไป สีขาวสว่าง และจบด้วยสีเงินประกาย */
+    background: linear-gradient(135deg, #ffd700 0%, #ffffff 60%, #cbd5e1 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    
+    /* เงาเรืองแสงโทนอุ่นเพื่อให้เข้ากับสีทอง */
+    filter: drop-shadow(0 0 5px rgba(255, 215, 0, 0.3))
+            drop-shadow(1px 1px 2px rgba(11, 17, 34, 0.3));
+
+    /* สถานะเริ่มต้นสำหรับทำ Transition */
     opacity: 0;
     transition: opacity 0.5s ease;
+}
+
+@keyframes logoGlowPulse {
+    0% {
+        filter: drop-shadow(0 0 6px rgba(59, 130, 246, 0.5))
+                drop-shadow(2px 2px 4px rgba(11, 17, 34, 0.5));
+    }
+    100% {
+        filter: drop-shadow(0 0 14px rgba(59, 130, 246, 0.8))
+                drop-shadow(0 0 20px rgba(29, 78, 216, 0.4))
+                drop-shadow(2px 2px 4px rgba(11, 17, 34, 0.5));
+    }
 }
 
 .navbar.scrolled .nav-tagline {
@@ -107,10 +131,25 @@ body::before {
 }
 
 .nav-logo-fixed {
-    font-size: 1.6rem;
     font-weight: 700;
-    letter-spacing: 4px;
-    color: #1e3a8a;
+    font-size: 1.6rem;
+    letter-spacing: 2px;
+    display: inline-block;
+    
+    /* 🎨 เฉดสี: น้ำเงินพรรค ไล่ไป ฟ้าสว่าง และตบท้ายด้วยสีเงิน Slate */
+    background: linear-gradient(135deg, #1d4ed8 0%, #3b82f6 50%, #e2e8f0 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    
+    /* เอฟเฟกต์เงาเรืองแสงเน้นสีฟ้าและน้ำเงิน */
+    filter: drop-shadow(0 0 8px rgba(59, 130, 246, 0.6)) 
+            drop-shadow(2px 2px 4px rgba(11, 17, 34, 0.5));
+    
+    /* อนิเมชั่นเรืองแสงวูบวาบเบาๆ (แก้ไขชื่อฟังก์ชันให้ถูกต้องแล้ว) */
+    animation: logoGlowPulse 4s infinite alternate ease-in-out;
+
+    /* สถานะเริ่มต้นสำหรับทำ Transition */
     opacity: 0;
     transform: translateY(-10px);
     transition: all 0.5s ease;
@@ -579,6 +618,7 @@ body::before {
 .slogan-line {
     width: 40px;
     height: 1px;
+    margin-top: 15px;
     background: linear-gradient(90deg, transparent, #d4a359);
 }
 .slogan-container span:last-child {
@@ -870,4 +910,290 @@ body::before {
 }
 .scroll-indicator:hover .wheel {
     background-color: #3b82f6 !important;
+}
+
+/* ==========================================================================
+   📱 MOBILE OPTIMIZATION FOR REGISTER FORM (หน้าจอขนาดเล็กกว่า 768px)
+   ========================================================================== */
+@media screen and (max-width: 768px) {
+
+    #register-section {
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+    }
+    
+    /* 1. ย่อขนาดและความกว้างของกล่องฟอร์มหลัก */
+    #register-section .form-container {
+        width: 100% !important;       /* ขยายกว้าง 100% ชิดขอบจอ */
+        max-width: 100% !important;   /* ปลดล็อกขนาดสูงสุด */
+        margin: 0 !important;          /* ลบขอบด้านนอกออกให้หมด */
+        
+        /* แนะนำให้เหลือ Padding ด้านในไว้นิดหน่อย (เช่น 15px) 
+           เพื่อให้ตัวหนังสือหรือช่องกรอกไม่ไปแปะติดขอบกระจกมือถือจนเกินไปครับ */
+        padding: 16px 15px !important; 
+        
+        /* หากชิดขอบจอแล้ว ไม่อยากให้มีขอบมน สามารถปรับเป็น 0 ได้ครับ */
+        border-radius: 0px !important; 
+    }
+
+    /* 2. ย่อหัวข้อฟอร์ม */
+    #register-section .form-header h2 {
+        font-size: 1.8rem !important; /* ลดขนาดหัวข้อลง */
+        margin-bottom: 15px !important;
+        letter-spacing: 1px !important;
+        margin-top: -50px;
+    }
+
+    /* 3. ปรับระยะห่างของแต่ละกลุ่มคำถาม */
+    #register-section .form-group {
+        margin-bottom: 10px !important; /* ลดช่องว่างระหว่างช่องกรอก */
+    }
+
+    /* 4. ย่อขนาดตัวอักษรของ Label (หัวข้อของแต่ละช่องกรอก) */
+    #register-section .form-group label,
+    #register-section .label-wrapper label {
+        font-size: 0.75rem !important; /* ขนาดตัวอักษรเล็กกะทัดรัด */
+        margin-bottom: 4px !important;
+    }
+    
+    /* ตัวนับตัวอักษรมุมขวา */
+    #register-section .char-counter {
+        font-size: 0.7rem !important;
+    }
+
+    /* 5. ปรับแต่งช่องกรอก Input และ Textarea ให้เล็กลง พิมพ์ง่ายขึ้น */
+    #register-section .form-group input,
+    #register-section .form-group textarea {
+        width: 100% !important;
+        padding: 8px 12px !important; /* ลดความหนาของช่องกรอก */
+        font-size: 0.8rem !important;  /* ลดขนาดตัวอักษรที่พิมพ์และ Placeholder */
+        border-radius: 6px !important;
+        box-sizing: border-box !important; /* ป้องกันไม่ให้ช่องกรอกล้นทะลุกล่อง */
+    }
+    
+    /* ล็อกความสูงช่องเหตุผลไม่ให้ยาวเกินไปบนจอมือถือ */
+    #register-section .form-group textarea {
+        min-height: 55px !important;
+        resize: none;
+    }
+
+    /* 6. ย่อขนาดปุ่มส่งข้อมูล */
+    #register-section .btn-submit-official {
+        padding: 10px 20px !important; /* ลดความใหญ่ของปุ่ม */
+        font-size: 0.85rem !important;  /* ตัวอักษรบนปุ่มเล็กลง */
+        margin-top: 5px !important;
+        border-radius: 8px !important;
+    }
+    
+    /* 7. ปรับการเรียงตัวของกริด (เผื่อกรณีระบบเดิมตั้งเป็น 2 คอลัมน์บนคอม) */
+    #register-section .form-grid,
+    #register-section .form-grid-2 {
+        display: flex !important;
+        flex-direction: column !important; /* บนมือถือให้เรียงยาวลงมาบรรทัดละ 1 ช่อง */
+        gap: 0px !important;
+    }
+}
+
+/* ==========================================================================
+   🏛️ NEXORA GRAND FOOTER STYLE (อลังการ ยิ่งใหญ่ มีมิติ)
+   ========================================================================== */
+
+.grand-footer {
+    position: relative;
+    background: #060b18; /* สีน้ำเงินดำลึก */
+    padding: 60px 20px 30px 20px;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-top: 1px solid rgba(59, 130, 246, 0.2);
+}
+
+/* 🌌 พื้นหลังเรืองแสงแผ่จากด้านล่าง */
+.footer-glow-bg {
+    position: absolute;
+    bottom: -50px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 600px;
+    height: 300px;
+    background: radial-gradient(circle, rgba(29, 78, 216, 0.25) 0%, transparent 70%);
+    filter: blur(50px);
+    pointer-events: none;
+    z-index: 1;
+}
+
+.footer-container {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    max-width: 1200px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
+}
+
+/* 🛡️ จัดการรูปภาพโลโก้และเอฟเฟกต์ความยิ่งใหญ่ */
+.footer-emblem-wrapper {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+
+/* รูปภาพโลโก้หลักของพรรคที่นำมาใส่ */
+.footer-emblem-img {
+    width: 90px;
+    height: 90px;                  /* ล็อกความสูงให้เท่ากับความกว้าง */
+    border-radius: 50%;            /* เปลี่ยนรูปให้เป็นวงกลมสมบูรณ์ */
+    object-fit: cover;             /* ป้องกันไม่ให้รูปภาพยืดหรือบีบแบน */
+    border: 2px solid rgba(59, 130, 246, 0.5); /* เพิ่มขอบเรืองแสงสีฟ้าบางๆ ให้ดูมิติ */
+    
+    /* เอฟเฟกต์เดิม */
+    filter: drop-shadow(0 0 15px rgba(59, 130, 246, 0.6));
+    opacity: 0.85;
+    transition: all 0.5s ease;
+    margin-bottom: 20px;
+}
+
+.footer-emblem-wrapper:hover .footer-emblem-img {
+    transform: scale(1.05) rotate(5deg);
+    filter: drop-shadow(0 0 25px rgba(59, 130, 246, 0.9));
+    opacity: 1;
+}
+
+/* ตัวอักษรสะท้อนแสงขนาดใหญ่ด้านหลังโลโก้เพิ่มความโอ่อ่า */
+.footer-bg-text {
+    font-size: 5.5rem;
+    font-weight: 900;
+    letter-spacing: 15px;
+    margin: 0;
+    line-height: 1;
+    background: linear-gradient(360deg, rgba(255,255,255,0.01) 0%, rgba(59, 130, 246, 0.08) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    user-select: none;
+    pointer-events: none;
+}
+
+/* 📑 ปรับแต่งส่วนเนื้อหาตรงกลาง */
+.grand-footer .footer-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+}
+
+.grand-footer .copyright {
+    font-size: 0.75rem;
+    letter-spacing: 2px;
+    color: #64748b;
+    margin: 0;
+}
+
+.grand-footer .footer-divider {
+    width: 40px;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #3b82f6, transparent);
+    margin: 4px 0;
+}
+
+.grand-footer .developer {
+    font-size: 1.1rem;
+    color: #cbd5e1;
+    margin: 0;
+    letter-spacing: 1px;
+}
+
+.grand-footer .dev-team {
+    font-weight: 700;
+    background: linear-gradient(135deg, #ffffff 0%, #3b82f6 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0 0 10px rgba(59, 130, 246, 0.3);
+}
+
+/* 🇹🇭 ข้อความวิสัยทัศน์ตัวเล็กๆ ด้านล่างสุด */
+.footer-vision {
+    font-size: 0.65rem;
+    letter-spacing: 4px;
+    color: #475569;
+    text-align: center;
+    border-top: 1px solid rgba(255, 255, 255, 0.03);
+    padding-top: 15px;
+    width: 60%;
+}
+
+/* 📱 รองรับการแสดงผลบนมือถือให้ยังคงสวยงามไม่ล้นจอ */
+@media screen and (max-width: 768px) {
+    .grand-footer {
+        padding: 40px 15px 20px 15px;
+    }
+    .footer-bg-text {
+        font-size: 3rem;
+        letter-spacing: 8px;
+    }
+    .footer-emblem-img {
+        width: 70px;
+    }
+    .footer-vision {
+        width: 90%;
+        letter-spacing: 2px;
+    }
+}
+
+/* ==========================================================================
+   🌌 MEMBER SECTIONS BACKGROUND TEXT (NEXORA BIG TEXT FOR MEMBERS)
+   ========================================================================== */
+
+/* ตั้งค่าเซกชันทุกอันรองรับวัตถุ absolute ลอยอยู่ด้านหลัง */
+.fullscreen-section {
+    position: relative;
+    overflow: hidden; 
+}
+
+/* ดันกล่องเนื้อหาและรูปภาพสมาชิกให้ลอยเด่นขึ้นมาข้างหน้าตัวอักษรพื้นหลัง */
+.fullscreen-section .section-container {
+    position: relative;
+    z-index: 2; 
+}
+
+/* สไตล์ตัวอักษรยักษ์พื้นหลังสำหรับหน้าสมาชิก */
+.member-bg-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); /* จัดให้อยู่กึ่งกลางหน้าจอพอดี */
+    margin: 0;
+    
+    /* ขนาดใหญ่สะใจเต็มหน้าจอ */
+    font-size: 15vw; 
+    font-weight: 900;
+    letter-spacing: 30px;
+    line-height: 1;
+    z-index: 1; /* เลข 1 เพื่อให้อยู่เลเยอร์หลังสุดหลังรูปภาพคน */
+    
+    /* การไล่สีขาว-ฟ้าจางๆ ละมุนตา ไม่แย่งความเด่นของรูปคน */
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.02) 0%, rgba(59, 130, 246, 0.04) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    
+    /* เคลือบเงาเรืองแสงบางเบาให้ดูไฮเทค */
+    filter: drop-shadow(0 0 30px rgba(59, 130, 246, 0.1));
+    
+    user-select: none;     /* ยูสเซอร์ลากคลุมไม่ได้ */
+    pointer-events: none;  /* เมาส์ทะลุผ่านได้ ไม่บังการคลิกปุ่มลิงก์ IG */
+}
+
+/* 📱 ปรับแต่งความสวยงามเมื่อเปิดบนหน้าจอมือถือ */
+@media screen and (max-width: 768px) {
+    .member-bg-text {
+        font-size: 22vw; /* ขยายให้ใหญ่ขึ้นเต็มหน้าจอมือถือ */
+        letter-spacing: 12px; /* ลดระยะห่างตัวอักษรลงเพื่อไม่ให้ตกขอบหน้าจอ */
+        opacity: 0.7; 
+    }
 }
