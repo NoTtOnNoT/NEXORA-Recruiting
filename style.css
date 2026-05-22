@@ -1181,7 +1181,7 @@ body::before {
     z-index: 1; 
     
     /* 🎨 ขั้นตอนที่ 1: ปรับเนื้ออักษรให้จางมากๆ จนแทบกลืนไปกับพื้นหลัง */
-    background: linear-gradient(180deg, rgba(255, 255, 255, 0.015) 0%, rgba(59, 130, 246, 0.05) 100%);
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.04) 0%, rgba(59, 130, 246, 0.08) 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -1192,8 +1192,8 @@ body::before {
     /* ✨ ขั้นตอนที่ 3: ใส่เอฟเฟกต์เบลอตัวอักษรเบาๆ เพื่อลบความเหลี่ยมคม 
        ร่วมกับการซ้อนเงาฟุ้งสเต็ปนุ่มนวล (Soft Glow) */
     filter: blur(2px)
-            drop-shadow(0 0 20px rgba(59, 130, 246, 0.5))
-            drop-shadow(0 0 60px rgba(59, 130, 246, 0.2));
+            drop-shadow(0 0 20px rgba(59, 130, 246, 1.5))
+            drop-shadow(0 0 60px rgba(59, 130, 246, 1));
     
     user-select: none;     
     pointer-events: none;  
@@ -1229,5 +1229,30 @@ body::before {
         padding-left: 20px !important;
         padding-right: 20px !important;
         text-align: center; /* เผื่ออยากให้ข้อความอยู่กึ่งกลางบนมือถือ */
+    }
+}
+
+/* ==========================================================================
+   🚫 FIX: บังคับให้ชื่อ-นามสกุลของสมาชิกอยู่ในบรรทัดเดียวกันเสมอ ไม่ตกบรรทัด
+   ========================================================================== */
+
+.member-info .name {
+    white-space: nowrap; /* 🚫 ห้ามขึ้นบรรทัดใหม่เด็ดขาด ยาวแค่ไหนก็ให้อยู่แถวเดิม */
+    word-break: keep-all; /* ป้องกันการตัดแบ่งกลางคำ */
+}
+
+/* 📱 ควบคุมขนาดเพิ่มเติมเมื่อแสดงผลบนหน้าจอมือถือ */
+@media screen and (max-width: 768px) {
+    .member-info .name {
+        /* ปรับขนาดฟอนต์บนมือถือลงเล็กน้อย (เช่น 1.5rem ถึง 1.8rem) 
+           เพื่อให้ชื่อที่ยาวมากๆ ยังสามารถยัดลงในหน้าจอมือถือได้พอดีโดยไม่ล้นขอบครับ */
+        font-size: 1.6rem !important; 
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .member-info .name {
+        font-size: 1.4rem !important;
+        letter-spacing: -0.5px; /* บีบระยะห่างตัวอักษรให้แคบลงเพื่อประหยัดพื้นที่ */
     }
 }
