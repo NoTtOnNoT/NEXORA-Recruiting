@@ -1,62 +1,219 @@
-// --- 1. ควบคุมแอนิเมชันโลโก้ ย่อ-ขยาย ผ่าน Container เลื่อนหน้าจอ ---
+/**
+ * NEXORA PARTY - CORE JAVASCRIPT ENGINE (ALL-IN-ONE)
+ * ใช้ร่วมกันได้ทั้งหน้าสมัครสมาชิก (Index) และหน้าแอดมิน (Admin)
+ */
+
+// ==========================================
+// 1. ระบบควบคุมแอนิเมชันโลโก้ (สำหรับหน้าแรก)
+// ==========================================
 const snapContainer = document.querySelector('.snap-container');
 
-snapContainer.addEventListener('scroll', function() {
-    const navbar = document.getElementById('navbar');
-    const logo = document.getElementById('party-logo');
-    const slogan = document.getElementById('party-slogan');
-    const indicator = document.querySelector('.scroll-indicator');
-    
-    // ดึงค่าการสโครลจากกล่อง snapContainer แทน window
-    if (snapContainer.scrollTop > 80) {
-        navbar.classList.add('scrolled');
-        if(logo) logo.classList.add('fade-and-shrink'); 
-        if(slogan) slogan.classList.add('fade-out');
-        if(indicator) indicator.classList.add('fade-out');
-    } else {
-        navbar.classList.remove('scrolled');
-        if(logo) logo.classList.remove('fade-and-shrink'); 
-        if(slogan) slogan.classList.remove('fade-out');
-        if(indicator) indicator.classList.remove('fade-out');
-    }
-});
-
-
-// --- 2. ระบบส่งข้อมูลไปยังฐานข้อมูล Google Sheet ---
-document.getElementById('sheetdb-form').addEventListener('submit', function(e) {
-    e.preventDefault(); 
-
-    const form = e.target;
-    const submitBtn = document.getElementById('submit-btn');
-    const statusMsg = document.getElementById('status-message');
-
-    submitBtn.innerText = 'PROCESSING...';
-    submitBtn.disabled = true;
-
-    const formData = new FormData(form);
-    const sheetAPI_URL = 'https://sheetdb.io/api/v1/vjht2bq2sau8i'; 
-
-    fetch(sheetAPI_URL, {
-        method: 'POST',
-        body: formData
-    })
-    .then(response => {
-        if(response.ok) {
-            statusMsg.innerText = 'SUCCESS: บันทึกข้อมูลใบสมัครของคุณเรียบร้อยแล้ว';
-            statusMsg.className = 'status-box success';
-            form.reset(); 
+if (snapContainer) {
+    snapContainer.addEventListener('scroll', function() {
+        const navbar = document.getElementById('navbar');
+        const logo = document.getElementById('party-logo');
+        const slogan = document.getElementById('party-slogan');
+        const indicator = document.querySelector('.scroll-indicator');
+        
+        // ดึงค่าการสโครลจากกล่อง snapContainer แทน window
+        if (snapContainer.scrollTop > 80) {
+            if (navbar) navbar.classList.add('scrolled');
+            if (logo) logo.classList.add('fade-and-shrink'); 
+            if (slogan) slogan.classList.add('fade-out');
+            if (indicator) indicator.classList.add('fade-out');
         } else {
-            throw new Error('Submission failed');
+            if (navbar) navbar.classList.remove('scrolled');
+            if (logo) logo.classList.remove('fade-and-shrink'); 
+            if (slogan) slogan.classList.remove('fade-out');
+            if (indicator) indicator.classList.remove('fade-out');
         }
-    })
-    .catch(error => {
-        statusMsg.innerText = 'ERROR: ไม่สามารถส่งข้อมูลได้ กรุณาตรวจสอบระบบเครือข่าย';
-        statusMsg.className = 'status-box error';
-        console.error('Error:', error);
-    })
-    .finally(() => {
-        submitBtn.innerText = 'ส่งข้อมูลใบสมัคร';
-        submitBtn.disabled = false;
-        statusMsg.classList.remove('hidden'); 
     });
-});
+}
+
+// ==========================================
+// 2. ระบบส่งข้อมูลไปยังฐานข้อมูล Google Sheet (สำหรับฟอร์มสมัคร)
+// ==========================================
+const sheetForm = document.getElementById('sheetdb-form');
+
+if (sheetForm) {
+    sheetForm.addEventListener('submit', function(e) {
+        e.preventDefault(); 
+
+        const form = e.target;
+        const submitBtn = document.getElementById('submit-btn');
+        const statusMsg = document.getElementById('status-message');
+
+        if (submitBtn) {
+            submitBtn.innerText = 'PROCESSING...';
+            submitBtn.disabled = true;
+        }
+
+        const formData = new FormData(form);
+        const sheetAPI_URL = 'https://sheetdb.io/api/v1/vjht2bq2sau8i'; 
+
+        fetch(sheetAPI_URL, {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => {
+            if (response.ok) {
+                if (statusMsg) {
+                    statusMsg.innerText = 'SUCCESS: บันทึกข้อมูลใบสมัครของคุณเรียบร้อยแล้ว';
+                    statusMsg.className = 'status-box success';
+                }
+                form.reset(); 
+            } else {
+                throw new Error('Submission failed');
+            }
+        })
+        .catch(error => {
+            if (statusMsg) {
+                statusMsg.innerText = 'ERROR: ไม่สามารถส่งข้อมูลได้ กรุณาตรวจสอบระบบเครือข่าย';
+                statusMsg.className = 'status-box error';
+            }
+            console.error('Error:', error);
+        })
+        .finally(() => {
+            if (submitBtn) {
+                submitBtn.innerText = 'ส่งข้อมูลใบสมัคร';
+                submitBtn.disabled = false;
+            }
+            if (statusMsg) statusMsg.classList.remove('hidden'); 
+        });
+    });
+}
+
+// ==========================================
+// 3. ระบบดึงและแสดงผลข้อมูลแอดมิน (สำหรับหน้าแอดมิน)
+// ==========================================
+const adminAPI_URL = 'https://sheetdb.io/api/v1/vjht2bq2sau8i'; 
+let localApplicantsData = []; // เก็บข้อมูลไว้สำหรับการค้นหาเรียลไทม์
+
+// ฟังก์ชันหลักในการดึงข้อมูล (จะทำงานเฉพาะเมื่อเป็นหน้า Admin)
+function fetchApplicants() {
+    const loadingState = document.getElementById('loading-state');
+    const totalCount = document.getElementById('total-applicants');
+    const applicantsGrid = document.getElementById('applicants-grid');
+
+    // ตรวจสอบว่าหน้านี้มีบอร์ดแอดมินหรือไม่ ถ้าไม่มีให้หยุดฟังก์ชันทันที
+    if (!applicantsGrid) return; 
+
+    fetch(adminAPI_URL)
+        .then(response => {
+            if (!response.ok) throw new Error('Network response was not ok');
+            return response.json();
+        })
+        .then(data => {
+            // รองรับโครงสร้างข้อมูลที่อาจถูกหุ้มออบเจกต์มาจาก SheetDB
+            localApplicantsData = Array.isArray(data) ? data : (data.data || []);
+            
+            if (totalCount) totalCount.innerText = localApplicantsData.length;
+            if (loadingState) loadingState.style.display = 'none';
+
+            displayApplicants(localApplicantsData);
+        })
+        .catch(error => {
+            console.error('Error fetching data:', error);
+            if (loadingState) {
+                loadingState.innerHTML = `<p style="color: #f87171; font-weight: 500;">ERROR: ไม่สามารถเชื่อมต่อฐานข้อมูลส่วนกลางได้</p>`;
+            }
+        });
+}
+
+// ฟังก์ชันสำหรับสร้างการ์ดข้อมูลรายคนเวอร์ชันอัปเดตหัวข้อใหม่ (รวม Fallback ดักชื่อตัวแปร)
+function displayApplicants(applicants) {
+    const applicantsGrid = document.getElementById('applicants-grid');
+    if (!applicantsGrid) return;
+
+    applicantsGrid.innerHTML = ''; 
+
+    if (applicants.length === 0) {
+        applicantsGrid.innerHTML = `<p style="color: #64748b; text-align: center; grid-column: 1/-1; padding: 40px;">ไม่พบข้อมูลผู้สมัครที่ตรงเงื่อนไข</p>`;
+        return;
+    }
+
+    // ลูปสร้างการ์ดรายคนตามโครงสร้างฟอร์มใหม่
+    applicants.forEach(person => {
+        const card = document.createElement('div');
+        card.className = 'applicant-card';
+
+        // รองรับทั้งคีย์ธรรมดา และคีย์ที่ถูกส่งผ่านเนมสเปซ data[คีย์] เพื่อความแม่นยำ 100%
+        const name = person.name || person['data[name]'] || 'ไม่ระบุชื่อ';
+        const grade = person.grade || person['data[grade]'] || '-';
+        const gpa = person.gpa || person['data[gpa]'] || 'ไม่ได้ระบุ';
+        const facebook = person.facebook || person['data[facebook]'] || '-';
+        const instagram = person.instagram || person['data[instagram]'] || '-';
+        const reason = person.reason || person['data[reason]'] || 'ไม่มีคำตอบ';
+
+        card.innerHTML = `
+            <div class="card-badge">MEMBER</div>
+            <div class="card-info">
+                <h3 class="name">${name}</h3>
+                
+                <div class="info-item">
+                    <span class="label">ระดับชั้น / ห้องเรียน</span>
+                    <span class="value">${grade}</span>
+                </div>
+
+                <div class="info-item">
+                    <span class="label">เกรดเฉลี่ย (2/2568)</span>
+                    <span class="value" style="color: #3b82f6; font-weight: 600;">${gpa}</span>
+                </div>
+                
+                <div class="info-item">
+                    <span class="label">Facebook</span>
+                    <span class="value social">${facebook}</span>
+                </div>
+                
+                <div class="info-item">
+                    <span class="label">Instagram</span>
+                    <span class="value social">${instagram}</span>
+                </div>
+
+                <div class="info-item" style="margin-top: 15px; padding-top: 15px; border-top: 1px solid rgba(255,255,255,0.05);">
+                    <span class="label" style="color: #d4a359;">เหตุผลที่อยากเข้าพรรค:</span>
+                    <p class="value" style="font-size: 0.85rem; line-height: 1.5; color: #94a3b8; white-space: pre-line;">
+                        "${reason}"
+                    </p>
+                </div>
+            </div>
+        `;
+        applicantsGrid.appendChild(card);
+    });
+}
+
+// ระบบค้นหาข้อมูลเรียลไทม์ (Real-time Search Filter สำหรับหน้า Admin)
+const searchInput = document.getElementById('search-input');
+if (searchInput) {
+    searchInput.addEventListener('input', function(e) {
+        const searchText = e.target.value.toLowerCase();
+        
+        const filteredData = localApplicantsData.filter(person => {
+            const name = (person.name || person['data[name]'] || '').toLowerCase();
+            const grade = (person.grade || person['data[grade]'] || '').toLowerCase();
+            return name.includes(searchText) || grade.includes(searchText);
+        });
+
+        displayApplicants(filteredData);
+    });
+}
+
+// รันระบบดึงข้อมูลทันทีเมื่อโหลดหน้าเว็บสำเร็จ (ฟังก์ชันจะดักเองหากไม่ใช่หน้า Admin)
+document.addEventListener('DOMContentLoaded', fetchApplicants);
+
+const reasonTextarea = document.getElementById('reason');
+const charCount = document.getElementById('char-count');
+
+if (reasonTextarea && charCount) {
+    reasonTextarea.addEventListener('input', function() {
+        const currentLength = this.value.length;
+        charCount.innerText = `${currentLength} / 300`;
+        
+        // ถ้าพิมพ์ใกล้เต็ม (เช่น เกิน 250 ตัว) ให้เปลี่ยนตัวนับเป็นสีทองไฮไลต์
+        if (currentLength >= 250) {
+            charCount.style.color = '#d4a359';
+        } else {
+            charCount.style.color = '#475569';
+        }
+    });
+}

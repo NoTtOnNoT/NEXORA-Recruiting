@@ -10,6 +10,8 @@
         <link
             href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&display=swap"
             rel="stylesheet">
+        <link rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     </head>
     <body>
 
@@ -26,21 +28,29 @@
 
             <section class="fullscreen-section hero-splash-section"
                 id="hero-section">
-                <div class="hero-glow-overlay"></div> <div class="hero-content">
+                <div class="hero-glow-overlay"></div>
+                <div class="hero-content">
                     <h1 class="party-logo" id="party-logo"
                         data-text="NEXORA">NEXORA</h1>
                     <div class="slogan-container">
                         <span class="slogan-line"></span>
-                        <p class="party-slogan" id="party-slogan">THE FUTURE IS
-                            NOW</p>
+                        <p class="party-slogan"
+                            id="party-slogan">เชื่อมต่อสู่ยุคสมัยใหม่</p>
                         <span class="slogan-line"></span>
                     </div>
 
-                    <div class="scroll-indicator">
-                        <div class="mouse-icon">
+                    <div class="scroll-indicator" onclick="scrollToRegister()"
+                        style="cursor: pointer; margin-top: 40px;">
+                        <div class="mouse-icon"
+                            style="transform: scale(0.7); transform-origin: center; margin-bottom: -10px;">
                             <div class="wheel"></div>
                         </div>
-                        <p>SCROLL TO EXPLORE</p>
+                        <p
+                            style="letter-spacing: 2px; font-size: 0.5rem; transition: color 0.3s ease; text-align: center;"
+                            class="scroll-text">
+                            CLICK OR SCROLL
+                            <br>TO REGISTER
+                        </p>
                     </div>
                 </div>
             </section>
@@ -51,9 +61,17 @@
                         <img src="members/ประธาน.png" alt="ประธานพรรค">
                     </div>
                     <div class="member-info">
-                        <span class="role-text">#01 / COLLABORATION</span>
+                        <span class="role-text">#01 / PRESIDENT</span>
                         <h3 class="role-title">ประธานพรรค</h3>
                         <h2 class="name">แสงอรุณ ไพโรจน์</h2>
+
+                        <div class="member-social">
+                            <a href="https://instagram.com/sxxzl_p"
+                                target="_blank" class="instagram-link">
+                                <i class="fa-brands fa-instagram ig-icon"></i>
+                                @sxxzl_p
+                            </a>
+                        </div>
                     </div>
                 </div>
             </section>
@@ -61,12 +79,20 @@
             <section class="fullscreen-section img-right">
                 <div class="section-container">
                     <div class="member-image-wrapper">
-                        <img src="members/ประธาน.png" alt="รองประธานพรรค">
+                        <img src="members/รองประธาน.png" alt="รองประธานพรรค">
                     </div>
                     <div class="member-info">
-                        <span class="role-text">#02 / INNOVATION</span>
+                        <span class="role-text">#02 / VICE PRESIDENT</span>
                         <h3 class="role-title">รองประธานพรรค</h3>
-                        <h2 class="name">แสงอรุณ ไพโรจน์</h2>
+                        <h2 class="name">ธีรัตม์ ทองชูช่วย</h2>
+
+                        <div class="member-social">
+                            <a href="https://instagram.com/tenn_tn10"
+                                target="_blank" class="instagram-link">
+                                <i class="fa-brands fa-instagram ig-icon"></i>
+                                @tenn_tn10
+                            </a>
+                        </div>
                     </div>
                 </div>
             </section>
@@ -77,38 +103,41 @@
                         <img src="members/ประธาน.png" alt="เลขานุการพรรค">
                     </div>
                     <div class="member-info">
-                        <span class="role-text">#03 / TRANSPARENCY</span>
+                        <span class="role-text">#03 / SECRETARY</span>
                         <h3 class="role-title">เลขานุการพรรค</h3>
                         <h2 class="name">แสงอรุณ ไพโรจน์</h2>
                     </div>
                 </div>
             </section>
 
-            <section class="fullscreen-section bg-dark-blue">
+            <section class="fullscreen-section bg-dark-blue"
+                id="register-section">
                 <div class="form-container">
                     <div class="form-header">
                         <h2>NEXORA FORM</h2>
-                        <p>ร่วมเป็นส่วนหนึ่งในการพัฒนาไปกับพรรค NEXORA</p>
                     </div>
 
                     <form id="sheetdb-form" class="official-form">
-                        <div class="form-group">
-                            <label for="name">ชื่อ - นามสกุล</label>
-                            <input type="text" id="name" name="name"
-                                placeholder="กรุณากรอกชื่อและนามสกุลจริง"
-                                required>
-                        </div>
+                        <div class="form-grid-2">
+                            <div class="form-group">
+                                <label for="name">ชื่อ - นามสกุล</label>
+                                <input type="text" id="name" name="data[name]"
+                                    placeholder="กรุณากรอกชื่อและนามสกุล"
+                                    required>
+                            </div>
 
-                        <div class="form-group">
-                            <label for="grade">ระดับชั้น / ห้องเรียน</label>
-                            <input type="text" id="grade" name="grade"
-                                placeholder="ตัวอย่าง: 5/1" required>
+                            <div class="form-group">
+                                <label for="grade">ห้องเรียน</label>
+                                <input type="text" id="grade" name="data[grade]"
+                                    placeholder="ตัวอย่าง: 5/1" required>
+                            </div>
                         </div>
 
                         <div class="form-grid">
                             <div class="form-group">
                                 <label for="facebook">Facebook Account</label>
-                                <input type="text" id="facebook" name="facebook"
+                                <input type="text" id="facebook"
+                                    name="data[facebook]"
                                     placeholder="ลิงก์โปรไฟล์หรือชื่อบัญชี"
                                     required>
                             </div>
@@ -116,10 +145,32 @@
                             <div class="form-group">
                                 <label for="instagram">Instagram Account</label>
                                 <input type="text" id="instagram"
-                                    name="instagram"
-                                    placeholder="ตัวอย่าง: @nexora_party"
+                                    name="data[instagram]"
+                                    placeholder="ตัวอย่าง: @nexora_official69"
                                     required>
                             </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="gpa">เกรดเฉลี่ย (เทอม 2 ปีการศึกษา
+                                2568)</label>
+                            <input type="number" id="gpa" name="data[gpa]"
+                                step="0.01" min="0.00" max="4.00"
+                                placeholder="ตัวอย่าง: 3.75" required>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="label-wrapper">
+                                <label
+                                    for="reason">เหตุผลที่อยากเข้ามาร่วมทางกับพรรค
+                                    NEXORA</label>
+                                <span id="char-count" class="char-counter">0 /
+                                    300</span>
+                            </div>
+                            <textarea id="reason" name="data[reason]" rows="2"
+                                maxlength="300"
+                                placeholder="พิมพ์เหตุผลของคุณที่นี่..."
+                                required></textarea>
                         </div>
 
                         <button type="submit" id="submit-btn"
@@ -134,13 +185,25 @@
                 <div class="footer-content">
                     <p class="copyright">ออกแบบและพัฒนาโดย</p>
                     <div class="footer-divider"></div>
-                    <p class="developer">พรรค<span
-                            class="dev-team"> NEXORA</span></p>
+                    <p class="developer">พรรค<span class="dev-team">
+                            NEXORA</span></p>
                 </div>
-            </footer>
+                </</footer>
 
         </main>
 
         <script src="script.js"></script>
+
+        <script>
+            function scrollToRegister() {
+                const target = document.getElementById('register-section');
+                if (target) {
+                    target.scrollIntoView({ 
+                        behavior: 'smooth', // เลื่อนแบบนุ่มนวล
+                        block: 'start'      // ให้ขอบบนของเซกชันพอดีหน้าจอ
+                    });
+                }
+            }
+        </script>
     </body>
 </html>

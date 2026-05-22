@@ -258,9 +258,21 @@ body::before {
 .name {
     font-size: 3.5rem;
     font-weight: 700;
-    color: #0f172a;
+    color: #ffffff;
     line-height: 1.2;
-    text-shadow: 0 4px 12px rgba(30, 41, 59, 0.05);
+    
+    /* ปรับเป็นแสงเงาเรืองรองสีน้ำเงิน-ขาว ซ้อนกัน 3 ชั้นเพื่อความมีมิติ */
+    text-shadow: 0 0 12px rgba(59, 130, 246, 0.4),  /* แสงสีน้ำเงินเรืองรองรอบตัวอักษร */
+                 0 4px 20px rgba(59, 130, 246, 0.2),  /* แสงฟุ้งกระจายออกด้านข้าง */
+                 0 10px 30px rgba(0, 0, 0, 0.3);      /* มิติเงาเข้มด้านหลังสุดช่วยให้ตัวหนังสืออ่านง่ายขึ้น */
+                 
+    transition: text-shadow 0.3s ease; /* เพิ่มอนิเมชันเผื่อเวลามีการ Hover */
+}
+
+.name:hover {
+    text-shadow: 0 0 20px rgba(59, 130, 246, 0.7),
+                 0 4px 30px rgba(96, 165, 250, 0.4),
+                 0 10px 30px rgba(0, 0, 0, 0.4);
 }
 
 /* --- ระบบฟอร์มรับสมัคร --- */
@@ -291,9 +303,47 @@ body::before {
 .form-header h2 {
     font-size: 2.5rem;
     letter-spacing: 2px;
-    color: #ffffff;
     font-weight: 700;
-    text-shadow: 0 0 15px rgba(212, 163, 89, 0.3);
+    margin-bottom: 7px;
+    text-align: center; 
+    
+    /* 1. กำหนดกลุ่มเฉดสีของพรรค (ทอง-น้ำเงิน-ฟ้า-ทอง) มาทำเป็นพื้นหลังตัวอักษร */
+    background: linear-gradient(
+        to right, 
+        #dfb06b 0%, 
+        #82b2ff 30%, 
+        #a3ccff 50%, 
+        #75aaff 70%, 
+        #e2b168 100%
+    );
+    background-size: 200% auto; /* ขยายขนาดเพื่อให้มีพื้นที่ในการเลื่อนแสงสี */
+    
+    /* 2. เจาะให้เฉดสีแสดงผลเฉพาะบนตัวอักษร */
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    
+    /* 3. เพิ่มเงาเรืองแสงสีทอง-น้ำเงินจาง ๆ ซ้อนด้านหลัง */
+    filter: drop-shadow(0 2px 8px rgba(59, 130, 246, 0.3))
+            drop-shadow(0 4px 20px rgba(212, 163, 89, 0.2));
+            
+    /* 4. สั่งรันแอนิเมชันให้แสงสีวิ่งเคลื่อนไหวตลอดเวลา */
+    animation: nexoraGlowShift 4s linear infinite;
+}
+
+/* --- อนิเมชันควบคุมการขยับของตำแหน่งแสงสี --- */
+@keyframes nexoraGlowShift {
+    0% {
+        background-position: 0% center;
+    }
+    100% {
+        background-position: 200% center; /* เลื่อนตำแหน่งเพื่อให้สีวิ่งครบรอบ */
+    }
+}
+
+.form-header {
+    text-align: center; /* จัดทุกข้อความในกลุ่มหัวข้อให้อยู่ตรงกลาง */
+    margin-bottom: 5px; /* เพิ่มระยะห่างระหว่างหัวข้อกับตัวกล่องฟอร์มด้านล่าง */
 }
 
 .form-header p {
@@ -305,14 +355,14 @@ body::before {
 .official-form {
     background: rgba(11, 19, 43, 0.75);
     backdrop-filter: blur(10px);
-    padding: 40px 50px;
+    padding: 30px 50px;
     border-radius: 24px;
     box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.4);
     border: 1px solid rgba(212, 163, 89, 0.4);
 }
 
 .form-group {
-    margin-bottom: 20px;
+    margin-bottom: 12px;
     display: flex;
     flex-direction: column;
 }
@@ -320,6 +370,12 @@ body::before {
 .form-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.form-grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 0.5fr;
     gap: 20px;
 }
 
@@ -334,7 +390,7 @@ body::before {
 .form-group input {
     background: #0b132b;
     border: 1px solid #334155;
-    padding: 14px;
+    padding: 12px;
     border-radius: 12px;
     color: #ffffff;
     font-size: 1rem;
@@ -448,6 +504,10 @@ body::before {
         grid-template-columns: 1fr;
         gap: 0;
     }
+    .form-grid-2 {
+        grid-template-columns: 1fr;
+        gap: 0;
+    }
     .official-form {
         padding: 25px 20px;
     }
@@ -492,10 +552,17 @@ body::before {
     font-weight: 800;
     letter-spacing: 20px; /* เพิ่มระยะห่างตัวอักษรให้ดูสากลและมั่นคง */
     text-transform: uppercase;
-    background: linear-gradient(135deg, #1e3a8a 0%, #1d4ed8 50%, #3b82f6 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    filter: drop-shadow(0 15px 30px rgba(30, 58, 138, 0.15));
+    
+    /* 1. เปลี่ยนเป็นสีขาวบริสุทธิ์ (ยกเลิกการใช้ -webkit-background-clip) */
+    color: #ffffff;
+    -webkit-background-clip: initial;
+    -webkit-text-fill-color: initial;
+    
+    /* 2. ปรับเป็นเงาสีขาวฟุ้งเรืองรองซ้อนกันเพื่อให้เงาดูเนียนหนาและลอยเด่นขึ้นมา */
+    text-shadow: 0 0 15px rgba(255, 255, 255, 0.35), 
+                 0 0 30px rgba(255, 255, 255, 0.15),
+                 0 15px 45px rgba(255, 255, 255, 0.1);
+                 
     position: relative;
     margin-right: -20px; /* บาลานซ์ช่องว่างของตัวอักษรตัวสุดท้าย */
 }
@@ -598,4 +665,209 @@ body::before {
     .scroll-indicator {
         bottom: 75px;
     }
+}
+
+/* จัดการตำแหน่งของ Label และตัวนับตัวอักษร */
+.label-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 4px;
+}
+
+.char-counter {
+    font-size: 0.75rem;
+    color: #475569;
+    letter-spacing: 1px;
+    transition: color 0.3s ease;
+}
+
+/* ปรับแต่งตัว Textarea ให้ดูล้ำสมัย */
+.official-form textarea#reason {
+    background: rgba(5, 11, 24, 0.85);
+    border: 1px solid rgba(212, 163, 89, 0.2); /* เส้นขอบสีทองบาง ๆ */
+    border-radius: 14px;
+    padding: 16px;
+    color: #ffffff;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    outline: none;
+    resize: vertical; /* ให้ผู้ใช้ขยายความสูงได้เฉพาะแนวตั้ง ไม่ให้ล้นแนวขวาง */
+    min-height: 120px;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* เอฟเฟกต์ตอนที่ผู้ใช้กำลังคลิกพิมพ์ (Focus) */
+.official-form textarea#reason:focus {
+    border-color: #d4a359; /* เปลี่ยนเป็นสีทองสว่าง */
+    background: rgba(11, 19, 43, 0.95);
+    box-shadow: 0 0 20px rgba(212, 163, 89, 0.15), 
+                inset 0 0 10px rgba(29, 78, 216, 0.2); /* เรืองแสงสีน้ำเงินด้านใน */
+}
+
+/* สไตล์ข้อความตัวอย่างภายในช่อง */
+.official-form textarea#reason::placeholder {
+    color: #475569;
+    font-weight: 300;
+}
+
+/* เปลี่ยนสีพื้นหลังหน้าแรก และ หน้าแสดงข้อมูลสมาชิกทุกคนพร้อมกัน */
+#hero-section, 
+.fullscreen-section.img-left, 
+.fullscreen-section.img-right {
+    /* 🎨 สามารถเปลี่ยนโค้ดสีเรียบ หรือ สไตล์ Gradient ด้านล่างนี้ได้ตามต้องการ */
+    background: radial-gradient(circle at center, #0a192f 0%, #020c1b 100%) !important;
+}
+
+/* ==========================================
+   ANIMATED CYBER WAVES FOR MEMBER SECTIONS
+   ========================================== */
+
+/* จัดการ Container หลักของหน้าสมาชิกให้รองรับตำแหน่งคลื่น */
+.fullscreen-section.img-left, 
+.fullscreen-section.img-right {
+    position: relative;
+    overflow: hidden;
+}
+
+/* สร้างโครงสร้างเส้นคลื่นด้วย Pseudo-elements */
+.fullscreen-section.img-left::before,
+.fullscreen-section.img-right::before,
+.fullscreen-section.img-left::after,
+.fullscreen-section.img-right::after {
+    content: "";
+    position: absolute;
+    left: -50%;
+    min-width: 300vw;
+    min-height: 300vw;
+    background-color: transparent;
+    opacity: 0.04; /* ควบคุมความจางเพื่อให้เป็นพื้นหลัง ไม่แย่งซีนรูปคน */
+    pointer-events: none;
+    z-index: 1;
+}
+
+/* คลื่นลูกที่ 1 (เส้นขอบเรืองแสงสีน้ำเงิน) */
+.fullscreen-section.img-left::before,
+.fullscreen-section.img-right::before {
+    bottom: -150vw;
+    border-radius: 43%; /* ทำมุมให้โค้งมนคล้ายคลื่นน้ำ */
+    border: 2px solid #3b82f6;
+    box-shadow: 0 0 40px rgba(59, 130, 246, 0.3);
+    animation: rotateWave 28s infinite linear;
+}
+
+/* คลื่นลูกที่ 2 (เส้นขอบเรืองแสงสีทองพรรค สลับหมุนคนละด้านเพื่อมิติที่ทับซ้อน) */
+.fullscreen-section.img-left::after,
+.fullscreen-section.img-right::after {
+    bottom: -148vw;
+    border-radius: 40%;
+    border: 1.5px solid #d4a359;
+    box-shadow: 0 0 30px rgba(212, 163, 89, 0.2);
+    animation: rotateWaveReverse 35s infinite linear;
+}
+
+/* ดันเนื้อหา ข้อมูล และรูปภาพสมาชิกให้อยู่เหนือชั้นของคลื่น */
+.section-container {
+    position: relative;
+    z-index: 5;
+}
+
+/* --- อนิเมชันการหมุนเพื่อให้เกิดเอฟเฟกต์คลื่นพริ้วไหว --- */
+
+/* หมุนตามเข็มนาฬิกา */
+@keyframes rotateWave {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+/* หมุนทวนเข็มนาฬิกา (ช่วยให้คลื่นดูมีน้ำหนักตัดกันธรรมชาติ) */
+@keyframes rotateWaveReverse {
+    0% {
+        transform: rotate(360deg);
+    }
+    100% {
+        transform: rotate(0deg);
+    }
+}
+
+/* Container ควบคุมระยะห่างของโซเชียลสมาชิก */
+.member-social {
+    margin-top: 20px;
+    display: inline-block;
+}
+
+/* สไตล์ปุ่ม Instagram สุดล้ำ */
+.instagram-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(59, 130, 246, 0.3); /* เส้นขอบสีน้ำเงินจาง */
+    border-radius: 30px;
+    padding: 8px 18px;
+    color: #94a3b8;
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 400;
+    letter-spacing: 1px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* เอฟเฟกต์รูปไอคอนด้านใน */
+.instagram-link .ig-icon {
+    font-size: 1rem;
+    transition: transform 0.3s ease;
+}
+
+/* เอฟเฟกต์ตอนเอาเมาส์ไปชี้ (Hover) */
+.instagram-link:hover {
+    color: #ffffff;
+    background: rgba(59, 130, 246, 0.1);
+    border-color: #3b82f6; /* ขอบสว่างขึ้น */
+    box-shadow: 0 0 15px rgba(59, 130, 246, 0.3); /* เรืองแสงสีน้ำเงิน */
+    transform: translateY(-2px); /* ลอยขึ้นเล็กน้อย */
+}
+
+.instagram-link:hover .ig-icon {
+    transform: scale(1.2) rotate(-10deg); /* ไอคอนขยายและเอียงสร้างลูกเล่น */
+}
+
+/* ปรับขนาดและสไตล์ของไอคอนไอจีให้สมส่วน */
+.instagram-link .ig-icon {
+    font-size: 1.1rem; /* ปรับขนาดไอคอน */
+    color: #94a3b8;
+    transition: transform 0.3s ease, color 0.3s ease;
+}
+
+/* เมื่อเอาเมาส์ชี้ ปุ่มไอจีจะเปลี่ยนเป็นสีขาวเรืองแสงและเอียงตัว */
+.instagram-link:hover .ig-icon {
+    color: #ffffff;
+    transform: scale(1.2) rotate(15deg); /* ไอคอนขยายขึ้น 1.2 เท่า และเอียงตามเข็มนาฬิกา 15 องศา */
+}
+
+/* เอฟเฟกต์เพิ่มเติมของปุ่ม JOIN US */
+.btn-join-us:hover {
+    transform: translateY(-3px); /* ลอยขึ้นเล็กน้อย */
+    box-shadow: 0 8px 30px rgba(59, 130, 246, 0.6); /* เรืองแสงเข้มขึ้น */
+    filter: brightness(1.1); /* สว่างขึ้นเล็กน้อย */
+}
+
+.btn-join-us:active {
+    transform: translateY(-1px); /* ยุบลงตอนกด */
+}
+
+/* เอฟเฟกต์เมื่อชี้ที่ปุ่มสโครลสมัครสมาชิก */
+.scroll-indicator:hover .scroll-text {
+    color: #3b82f6 !important; /* เปลี่ยนเป็นสีน้ำเงินพรรค */
+    text-shadow: 0 0 10px rgba(59, 130, 246, 0.6);
+}
+.scroll-indicator:hover .mouse-icon {
+    border-color: #3b82f6 !important;
+}
+.scroll-indicator:hover .wheel {
+    background-color: #3b82f6 !important;
 }
