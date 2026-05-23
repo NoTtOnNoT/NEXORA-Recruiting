@@ -1303,3 +1303,129 @@ body::before {
         letter-spacing: -0.5px; /* บีบระยะห่างตัวอักษรให้แคบลงเพื่อประหยัดพื้นที่ */
     }
 }
+
+/* ==========================================================================
+   🚨 NEXORA PREMIUM POPUP MODAL (GLASSMORPHISM & NEON GLOW)
+   ========================================================================== */
+
+/* 1. เลเยอร์ม่านหลัง (Overlay Background) */
+.popup-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(7, 11, 22, 0.45); /* มืดโปร่งแสงแบบพอดี */
+    backdrop-filter: blur(12px); /* เอฟเฟกต์กระจกฝ้า เบลอฉากหลังให้โมดอลเด่น */
+    -webkit-backdrop-filter: blur(12px);
+    display: none; /* ซ่อนไว้เริ่มต้น */
+    justify-content: center;
+    align-items: center;
+    z-index: 99999; /* มั่นใจว่าอยู่เหนือทุกเลเยอร์และ Navbar */
+    opacity: 0;
+    transition: opacity 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+/* สถานะเมื่อป๊อปอัพทำงาน (Active) */
+.popup-modal.active {
+    display: flex;
+    opacity: 1;
+}
+
+/* 2. กล่องเนื้อหาป๊อปอัพ (Popup Container) */
+.popup-content {
+    background: rgba(15, 23, 42, 0.85); /* สีน้ำเงินเข้มข้นนุ่มลึก */
+    border: 1px solid rgba(239, 68, 68, 0.25); /* ขอบแดงไซไฟจาง ๆ */
+    backdrop-filter: blur(20px); /* ซ้อนเลเยอร์กระจกฝ้าชั้นใน */
+    -webkit-backdrop-filter: blur(20px);
+    padding: 45px 35px;
+    border-radius: 24px; /* ขอบมนโค้งสไตล์โมเดิร์นเว็บ */
+    width: 90%;
+    max-width: 440px;
+    text-align: center;
+    box-shadow: 
+        0 20px 40px rgba(0, 0, 0, 0.7), 
+        0 0 50px rgba(239, 68, 68, 0.1); /* รังสีสีแดงจาง ๆ รอบกล่อง */
+    
+    /* เอฟเฟกต์แอนิเมชันย่อขยายตอนเปิดตัว */
+    transform: scale(0.85) translateY(20px);
+    transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* เมื่อสั่งเปิด ให้กล่องขยายขนาดมาที่ปกติ (Pop-in Effect) */
+.popup-modal.active .popup-content {
+    transform: scale(1) translateY(0);
+}
+
+/* 3. ไอคอนกากบาทแจ้งเตือน (Warning Icon) */
+.popup-icon {
+    font-size: 4rem;
+    color: #ff4a4a; /* สีแดงสว่าง */
+    margin-bottom: 22px;
+    animation: popupPulse 2s infinite ease-in-out; /* แอนิเมชันชีพจรเรืองแสง */
+}
+
+/* 4. หัวข้อ (Popup Title) */
+.popup-content h3 {
+    font-family: 'Kanit', sans-serif;
+    color: #ffffff !important;
+    font-size: 1.6rem;
+    font-weight: 600;
+    margin-bottom: 14px;
+    letter-spacing: 0.5px;
+}
+
+/* 5. ข้อความอธิบาย (Description Text) */
+.popup-content p {
+    font-family: 'Kanit', sans-serif;
+    color: #94a3b8 !important; /* สีเทา-ฟ้า สว่าง สบายตา */
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin-bottom: 35px;
+    font-weight: 300;
+}
+
+/* 6. ปุ่มรับทราบ (Action Button) */
+.popup-btn-close {
+    font-family: 'Kanit', sans-serif;
+    background: linear-gradient(135deg, #ff4a4a 0%, #dc2626 100%); /* ไล่เฉดแดงสว่างไปแดงเข้ม */
+    color: #ffffff !important;
+    border: none;
+    padding: 14px 45px;
+    font-size: 1rem;
+    font-weight: 500;
+    border-radius: 12px;
+    cursor: pointer;
+    box-shadow: 0 4px 20px rgba(255, 74, 74, 0.35); /* นีออนเรืองแสงใต้ปุ่ม */
+    transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+    letter-spacing: 0.5px;
+}
+
+/* เอฟเฟกต์ตอนเอาเมาส์ไปชี้ปุ่ม (Hover) */
+.popup-btn-close:hover {
+    transform: translateY(-3px); /* ลอยขึ้นเล็กน้อย */
+    box-shadow: 0 8px 28px rgba(255, 74, 74, 0.55); /* เรืองแสงเข้มขึ้น */
+    filter: brightness(1.1);
+}
+
+/* เอฟเฟกต์ตอนกดปุ่ม (Active / Click) */
+.popup-btn-close:active {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 15px rgba(255, 74, 74, 0.4);
+}
+
+/* 7. 🔮 คีย์เฟรมแอนิเมชันไอคอนเรืองแสง (Neon Pulse Animation) */
+@keyframes popupPulse {
+    0% {
+        filter: drop-shadow(0 0 8px rgba(255, 74, 74, 0.4));
+        transform: scale(1);
+    }
+    50% {
+        filter: drop-shadow(0 0 22px rgba(255, 74, 74, 0.75));
+        transform: scale(1.05); /* ขยายตัวนุ่ม ๆ */
+    }
+    100% {
+        filter: drop-shadow(0 0 8px rgba(255, 74, 74, 0.4));
+        transform: scale(1);
+    }
+}
