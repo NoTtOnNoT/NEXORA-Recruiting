@@ -1,5 +1,5 @@
 /**
- * NEXORA PARTY - CORE JAVASCRIPT ENGINE (ALL-IN-ONE)
+ * NEXORA PARTY - CORE JAVASCRIPT ENGINE (STEINHQ ALL-IN-ONE VERSION)
  * ใช้ร่วมกันได้ทั้งหน้าสมัครสมาชิก (Index) และหน้าแอดมิน (Admin)
  */
 
@@ -31,7 +31,7 @@ if (snapContainer) {
 }
 
 // ==========================================
-// 2. ระบบส่งข้อมูลไปยังฐานข้อมูล Google Sheet (สำหรับฟอร์มสมัคร)
+// 2. ระบบส่งข้อมูลไปยังฐานข้อมูล Stein (สำหรับฟอร์มสมัคร)
 // ==========================================
 const sheetForm = document.getElementById('sheetdb-form');
 
@@ -48,12 +48,22 @@ if (sheetForm) {
             submitBtn.disabled = true;
         }
 
+        // 🔄 แปลงข้อมูลจาก Form ให้กลายเป็น JSON Object เพื่อให้รองรับกับระบบของ SteinHQ
         const formData = new FormData(form);
-        const sheetAPI_URL = 'https://api.steinhq.com/v1/storages/6a114ab392b1163e97f9c787'; 
+        const formObject = {};
+        formData.forEach((value, key) => {
+            formObject[key] = value.trim();
+        });
 
-        fetch(sheetAPI_URL, {
+        // 🌐 URL สำหรับยิง POST บันทึกข้อมูล ชี้เป้าตรงเข้าสู่แท็บ "/ชีต1"
+        const postAPI_URL = 'https://api.steinhq.com/v1/storages/6a114ab392b1163e97f9c787/ชีต1'; 
+
+        fetch(postAPI_URL, {
             method: 'POST',
-            body: formData
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify([formObject]) // Stein บังคับส่งข้อมูลหุ้มด้วย Array [ ] เสมอครับ
         })
         .then(response => {
             if (response.ok) {
@@ -62,6 +72,9 @@ if (sheetForm) {
                     statusMsg.className = 'status-box success';
                 }
                 form.reset(); 
+                if (typeof charCount !== 'undefined' && charCount) {
+                    charCount.innerText = '0 / 300';
+                }
             } else {
                 throw new Error('Submission failed');
             }
@@ -86,7 +99,8 @@ if (sheetForm) {
 // ==========================================
 // 3. ระบบดึงและแสดงผลข้อมูลแอดมิน (สำหรับหน้าแอดมิน)
 // ==========================================
-const adminAPI_URL = 'https://sheetdb.io/api/v1/vjht2bq2sau8i'; 
+// 🟢 เปลี่ยนจาก SheetDB ลิงก์เก่า มาดึงตารางจาก Stein ผ่านแท็บ "/ชีต1" ภาษาไทยตัวเดียวกัน
+const adminAPI_URL = 'https://api.steinhq.com/v1/storages/6a114ab392b1163e97f9c787/ชีต1'; 
 let localApplicantsData = []; // เก็บข้อมูลไว้สำหรับการค้นหาเรียลไทม์
 
 // ฟังก์ชันหลักในการดึงข้อมูล (จะทำงานเฉพาะเมื่อเป็นหน้า Admin)
@@ -104,8 +118,20 @@ function fetchApplicants() {
             return response.json();
         })
         .then(data => {
-            // รองรับโครงสร้างข้อมูลที่อาจถูกหุ้มออบเจกต์มาจาก SheetDB
-            localApplicantsData = Array.isArray(data) ? data : (data.data || []);
+            let rawData = Array.isArray(data) ? data : [];
+            
+            // ✂️ กรองข้อมูลแถวเปล่าที่ไม่มีรายชื่อออก เพื่อป้องกันกล่องข้อมูลขยะแสดงผลบนบอร์ด
+            let validApplicants = rawData.filter(person => {
+                const name = person.name || '';
+                return name.trim() !== '' && name.toLowerCase() !== 'name';
+            });
+
+            // 🔄 จัดเรียงข้อมูลผู้สมัครตามระดับห้องเรียน (grade) จากน้อยไปมาก
+            localApplicantsData = validApplicants.sort((a, b) => {
+                const gradeA = (a.grade || '').toString();
+                const gradeB = (b.grade || '').toString();
+                return gradeA.localeCompare(gradeB, 'th', { numeric: true, sensitivity: 'base' });
+            });
             
             if (totalCount) totalCount.innerText = localApplicantsData.length;
             if (loadingState) loadingState.style.display = 'none';
@@ -115,12 +141,12 @@ function fetchApplicants() {
         .catch(error => {
             console.error('Error fetching data:', error);
             if (loadingState) {
-                loadingState.innerHTML = `<p style="color: #f87171; font-weight: 500;">ERROR: ไม่สามารถเชื่อมต่อฐานข้อมูลส่วนกลางได้</p>`;
+                loadingState.innerHTML = `<p style="color: #f87171; font-weight: 500;">ERROR: ไม่สามารถเชื่อมต่อฐานข้อมูลส่วนกลางผ่าน STEIN API ได้</p>`;
             }
         });
 }
 
-// ฟังก์ชันสำหรับสร้างการ์ดข้อมูลรายคนเวอร์ชันอัปเดตหัวข้อใหม่ (รวม Fallback ดักชื่อตัวแปร)
+// ฟังก์ชันสำหรับสร้างการ์ดข้อมูลรายคนตามหัวตารางจริงในคอลัมน์ภาษาอังกฤษพิมพ์เล็ก
 function displayApplicants(applicants) {
     const applicantsGrid = document.getElementById('applicants-grid');
     if (!applicantsGrid) return;
@@ -132,18 +158,17 @@ function displayApplicants(applicants) {
         return;
     }
 
-    // ลูปสร้างการ์ดรายคนตามโครงสร้างฟอร์มใหม่
+    // ลูปสร้างการ์ดรายคน ดึงค่าตามหัวตารางพิมพ์เล็กแถวแรกเป๊ะๆ
     applicants.forEach(person => {
         const card = document.createElement('div');
         card.className = 'applicant-card';
 
-        // รองรับทั้งคีย์ธรรมดา และคีย์ที่ถูกส่งผ่านเนมสเปซ data[คีย์] เพื่อความแม่นยำ 100%
-        const name = person.name || person['data[name]'] || 'ไม่ระบุชื่อ';
-        const grade = person.grade || person['data[grade]'] || '-';
-        const gpa = person.gpa || person['data[gpa]'] || 'ไม่ได้ระบุ';
-        const facebook = person.facebook || person['data[facebook]'] || '-';
-        const instagram = person.instagram || person['data[instagram]'] || '-';
-        const reason = person.reason || person['data[reason]'] || 'ไม่มีคำตอบ';
+        const name = person.name || 'ไม่ระบุชื่อ';
+        const grade = person.grade || '-';
+        const gpa = person.gpa || 'ไม่ได้ระบุ';
+        const facebook = person.facebook || '-';
+        const instagram = person.instagram || '-';
+        const reason = person.reason || 'ไม่มีคำตอบ';
 
         card.innerHTML = `
             <div class="card-badge">MEMBER</div>
@@ -152,11 +177,11 @@ function displayApplicants(applicants) {
                 
                 <div class="info-item">
                     <span class="label">ระดับชั้น / ห้องเรียน</span>
-                    <span class="value">${grade}</span>
+                    <span class="value">ห้อง ${grade}</span>
                 </div>
 
                 <div class="info-item">
-                    <span class="label">เกรดเฉลี่ย (2/2568)</span>
+                    <span class="label">เกรดเฉลี่ยสะสม</span>
                     <span class="value" style="color: #3b82f6; font-weight: 600;">${gpa}</span>
                 </div>
                 
@@ -186,11 +211,11 @@ function displayApplicants(applicants) {
 const searchInput = document.getElementById('search-input');
 if (searchInput) {
     searchInput.addEventListener('input', function(e) {
-        const searchText = e.target.value.toLowerCase();
+        const searchText = e.target.value.toLowerCase().trim();
         
         const filteredData = localApplicantsData.filter(person => {
-            const name = (person.name || person['data[name]'] || '').toLowerCase();
-            const grade = (person.grade || person['data[grade]'] || '').toLowerCase();
+            const name = (person.name || '').toLowerCase();
+            const grade = (person.grade || '').toLowerCase();
             return name.includes(searchText) || grade.includes(searchText);
         });
 
@@ -201,6 +226,9 @@ if (searchInput) {
 // รันระบบดึงข้อมูลทันทีเมื่อโหลดหน้าเว็บสำเร็จ (ฟังก์ชันจะดักเองหากไม่ใช่หน้า Admin)
 document.addEventListener('DOMContentLoaded', fetchApplicants);
 
+// ==========================================
+// 4. ระบบจำกัดและนับจำนวนตัวอักษรกล่องเหตุผล
+// ==========================================
 const reasonTextarea = document.getElementById('reason');
 const charCount = document.getElementById('char-count');
 
@@ -209,7 +237,7 @@ if (reasonTextarea && charCount) {
         const currentLength = this.value.length;
         charCount.innerText = `${currentLength} / 300`;
         
-        // ถ้าพิมพ์ใกล้เต็ม (เช่น เกิน 250 ตัว) ให้เปลี่ยนตัวนับเป็นสีทองไฮไลต์
+        // ถ้าพิมพ์ใกล้เต็ม (เกิน 250 ตัว) ให้เปลี่ยนตัวนับเป็นสีทองไฮไลต์ตามดีไซน์พรรค
         if (currentLength >= 250) {
             charCount.style.color = '#d4a359';
         } else {
