@@ -2,25 +2,26 @@
 const currentAdminName = localStorage.getItem('admin_name');
 
 if (localStorage.getItem('admin_logged_in') !== 'true' || !currentAdminName) {
-    // 1. ล้างข้อมูลหน้าจอออกทันทีเพื่อความปลอดภัยในกรณีไม่มี Token สิทธิ์แอดมิน
     document.body.innerHTML = `
         <div style="background: #030712; color: #f87171; height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; font-family: 'Kanit', sans-serif;">
             <h2 style="margin-bottom: 10px;">🔒 ตรวจพบการเข้าถึงโดยไม่ได้รับอนุญาต</h2>
             <p style="color: #64748b;">กำลังนำคุณกลับไปหน้าเข้าสู่ระบบ...</p>
         </div>
     `;
-    // 2. ดีดผู้ใช้งานกลับไปที่หน้า login.html ทันที
     window.location.href = 'login.html';
 }
 
 // -------------------------------------------------------------------------
-// 🌐 ส่วนควบคุม Dashboard แบบ Real-time Auto-Sync & Multi-Admin Profile
+// 🌐 ส่วนควบคุม Dashboard แบบ Real-time Auto-Sync (SteinHQ Version - แก้บัก 400)
 // -------------------------------------------------------------------------
 
-const sheetAPI_URL = 'https://sheetdb.io/api/v1/1k3futknukg3a'; 
+// 🟢 ปรับเปลี่ยนคำต่อท้ายให้เป็น /ชีต1 (ภาษาไทย ตามที่ปรากฏในรูปภาพตารางของคุณ)
+const sheetAPI_URL = 'https://api.steinhq.com/v1/storages/6a114ab392b1163e97f9c787/ชีต1'; 
 
+let currentIntervalTime = 20000; 
 let localApplicantsData = []; 
 let isFetchLocked = false;    
+let syncTimer = null;
 
 // 1. ฟังก์ชันหลักในการดึงข้อมูลจากฐานข้อมูลส่วนกลาง (Background Sync)
 function fetchApplicants(isSilentUpdate = false) {
@@ -36,12 +37,18 @@ function fetchApplicants(isSilentUpdate = false) {
             return response.json();
         })
         .then(data => {
-            let rawData = Array.isArray(data) ? data : (data.data || []);
+            let rawData = Array.isArray(data) ? data : [];
             
+            // ✂️ [FILTER] กรองแถวว่าง หรือแถวที่ไม่มีข้อมูล "ชื่อ-นามสกุล" ออกไป เพื่อไม่ให้แสดงเป็นกล่องเปล่าบนจอ
+            let validApplicants = rawData.filter(person => {
+                const name = person.name || person['name'] || '';
+                return name.trim() !== '' && name !== 'name'; 
+            });
+
             // 🔄 [ALGORITHM] คัดแยกและจัดเรียงข้อมูลตามระดับชั้น/ห้องเรียนจากน้อยไปมาก
-            let sortedData = rawData.sort((a, b) => {
-                const gradeA = (a['data[grade]'] || a.grade || '').toString();
-                const gradeB = (b['data[grade]'] || b.grade || '').toString();
+            let sortedData = validApplicants.sort((a, b) => {
+                const gradeA = (a.grade || '').toString();
+                const gradeB = (b.grade || '').toString();
                 return gradeA.localeCompare(gradeB, 'th', { numeric: true, sensitivity: 'base' });
             });
             
@@ -70,7 +77,12 @@ function fetchApplicants(isSilentUpdate = false) {
             console.error('Error fetching data:', error);
             isFetchLocked = false;
             if (!isSilentUpdate && loadingState) {
-                loadingState.innerHTML = `<p style="color: #f87171; font-weight: 500;">เกิดข้อผิดพลาดในการโหลดข้อมูลจาก NEXORA DATABASE</p>`;
+                loadingState.innerHTML = `
+                    <div style="color: #f87171; font-weight: 500; text-align: center; padding: 20px;">
+                        <p>⚠️ เกิดข้อผิดพลาดในการโหลดข้อมูลจาก NEXORA DATABASE</p>
+                        <p style="font-size: 0.85rem; color: #64748b; margin-top: 5px;">โปรดตรวจสอบว่าได้เปิดสิทธิ์แชร์ Google Sheets เป็น "ทุกคนที่มีลิงก์" หรือยัง</p>
+                    </div>
+                `;
             }
         });
 }
@@ -91,8 +103,9 @@ function displayApplicants(applicants) {
         const card = document.createElement('div');
         card.className = 'applicant-card simplified-card';
 
-        const name = person['data[name]'] || person.name || 'ไม่ระบุชื่อ';
-        const grade = person['data[grade]'] || person.grade || '-';
+        // แมปปิ้งตามชื่อคอลัมน์แถวแรกในตารางของคุญเป๊ะๆ (พิมพ์เล็กทั้งหมด)
+        const name = person.name || 'ไม่ระบุชื่อ';
+        const grade = person.grade || '-';
 
         card.innerHTML = `
             <div class="card-header-mini">
@@ -120,12 +133,13 @@ function openDetailModal(person) {
     
     if (!modal || !modalBody) return;
 
-    const name = person['data[name]'] || person.name || 'ไม่ระบุชื่อ';
-    const grade = person['data[grade]'] || person.grade || '-';
-    const gpa = person['data[gpa]'] || person.gpa || 'ไม่ได้ระบุ';
-    const facebook = person['data[facebook]'] || person.facebook || '-';
-    const instagram = person['data[instagram]'] || person.instagram || '-';
-    const reason = person['data[reason]'] || person.reason || 'ไม่มีคำตอบ';
+    // ตรวจจับคีย์หัวตารางตามรูปภาพที่ส่งมา
+    const name = person.name || 'ไม่ระบุชื่อ';
+    const grade = person.grade || '-';
+    const gpa = person.gpa || 'ไม่ได้ระบุ';
+    const facebook = person.facebook || '-';
+    const instagram = person.instagram || '-';
+    const reason = person.reason || 'ไม่มีคำตอบ';
 
     modalBody.innerHTML = `
         <div class="modal-badge-status">MEMBER DATA PROFILE</div>
@@ -178,8 +192,8 @@ window.addEventListener('click', (e) => {
 function triggerLiveSearch(value) {
     const searchText = value.toLowerCase().trim();
     const filteredData = localApplicantsData.filter(person => {
-        const name = (person['data[name]'] || person.name || '').toLowerCase();
-        const grade = (person['data[grade]'] || person.grade || '').toLowerCase();
+        const name = (person.name || '').toLowerCase();
+        const grade = (person.grade || '').toLowerCase();
         return name.includes(searchText) || grade.includes(searchText);
     });
     displayApplicants(filteredData);
@@ -196,7 +210,7 @@ if (searchInput) {
 function adminLogout() {
     if (confirm('คุณต้องการออกจากระบบควบคุมแผงบริหาร NEXORA ใช่หรือไม่?')) {
         localStorage.removeItem('admin_logged_in'); 
-        localStorage.removeItem('admin_name');      // ล้างชื่อแอดมินรายบุคคลออก
+        localStorage.removeItem('admin_name');      
         window.location.href = 'login.html';       
     }
 }
@@ -205,7 +219,6 @@ function adminLogout() {
 // ⏰ [⚡ REAL-TIME ACTIVATOR] เริ่มทำงานและตั้งเวลาอัปเดตอัตโนมัติ
 // -------------------------------------------------------------------------
 document.addEventListener('DOMContentLoaded', () => {
-    // 👤 ดึงชื่อแอดมินปัจจุบันแสดงบน UI หน้าจอควบคุม
     const adminTarget = document.getElementById('admin-display-name');
     if (adminTarget) {
         adminTarget.innerText = currentAdminName;
@@ -213,8 +226,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     fetchApplicants(false);
 
-    // สั่งรันดึงข้อมูลใหม่แบบ Background Sync ทุก ๆ 10 วินาที
-    setInterval(() => {
+    syncTimer = setInterval(() => {
         fetchApplicants(true);
-    }, 10000);
+    }, currentIntervalTime);
 });

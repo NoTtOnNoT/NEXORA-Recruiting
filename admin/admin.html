@@ -5,13 +5,17 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>NEXORA PARTY - Admin Dashboard</title>
         <link rel="stylesheet" href="admin-style.css">
+        
+        <link rel="icon" type="image/x-icon" href="favicon.ico">
+
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link
-            href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&display=swap"
-            rel="stylesheet">
-        <link rel="stylesheet"
-            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+        <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+        
+        <link rel="stylesheet" 
+              href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" 
+              crossorigin="anonymous" 
+              referrerpolicy="no-referrer" />
     </head>
     <body>
 
@@ -24,13 +28,10 @@
 
                 <div class="admin-user-profile"
                     style="padding: 15px; background: rgba(59, 130, 246, 0.1); border-radius: 12px; margin: 20px 0; border: 1px solid rgba(59, 130, 246, 0.2);">
-                    <span
-                        style="display: block; color: #64748b; font-size: 0.75rem; margin-bottom: 4px;">ผู้ใช้งานปัจจุบัน:</span>
+                    <span style="display: block; color: #64748b; font-size: 0.75rem; margin-bottom: 4px;">ผู้ใช้งานปัจจุบัน:</span>
                     <div style="display: flex; align-items: center; gap: 10px;">
-                        <i class="fa-solid fa-circle-user"
-                            style="color: #60a5fa; font-size: 1.2rem;"></i>
-                        <span id="admin-display-name"
-                            style="color: #ffffff; font-weight: 500; font-size: 0.95rem;">Loading...</span>
+                        <i class="fa-solid fa-circle-user" style="color: #60a5fa; font-size: 1.2rem;"></i>
+                        <span id="admin-display-name" style="color: #ffffff; font-weight: 500; font-size: 0.95rem;">Loading...</span>
                     </div>
                 </div>
 
@@ -42,8 +43,7 @@
                 </div>
 
                 <div class="logout-panel" style="margin-top: auto;">
-                    <button type="button" onclick="adminLogout()"
-                        class="btn-logout">
+                    <button type="button" onclick="adminLogout()" class="btn-logout">
                         <i class="fa-solid fa-power-off"></i> ออกจากระบบ
                     </button>
                 </div>
@@ -57,8 +57,7 @@
                     </div>
 
                     <div class="search-box">
-                        <input type="text" id="search-input"
-                            placeholder="ค้นหาด้วยชื่อ หรือ ระดับชั้น...">
+                        <input type="text" id="search-input" placeholder="ค้นหาด้วยชื่อ หรือ ระดับชั้น...">
                     </div>
                 </header>
 
@@ -73,10 +72,8 @@
 
         <div id="detail-modal" class="modal-overlay">
             <div class="modal-content">
-                <button type="button" class="modal-close-btn"
-                    onclick="closeModal()">&times;</button>
-                <div id="modal-body-content">
-                </div>
+                <button type="button" class="modal-close-btn" onclick="closeModal()">&times;</button>
+                <div id="modal-body-content"></div>
             </div>
         </div>
 
